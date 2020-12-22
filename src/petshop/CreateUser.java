@@ -10,8 +10,10 @@ class CreateUser extends JFrame {
         setSize(500, 700);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
-        setUndecorated(true);
+        //setUndecorated(true);
         setLocationRelativeTo(null);
+
+
 
         setVisible(true);
     }

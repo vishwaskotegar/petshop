@@ -37,7 +37,7 @@ class Login extends JFrame{
         JTextField userField = new JTextField();
         userField.setBounds(155,500,275,25);
         userField.setFont(new Font("",Font.PLAIN,20));
-        //userField.setForeground(new Color(77, 19, 209));
+        //userField.setForeground(new Color(77, 19, 209,50));
         userField.setBorder(null);
         userField.setOpaque(false);
         add(userField);
@@ -62,26 +62,40 @@ class Login extends JFrame{
         passSeperator.setBounds(150,575,275,5);
         add(passSeperator);
 
-        try{
-            Class.forName("com.mysql.jdbc.Driver");
-            Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/petshop?useSSL=false","root","1234");
 
-            String mysqlUsername = username.getText();
-            String mysqlPassword = password.getText();
-
-            Statement stm = con.createStatement();
-
-            //String sql = "select * from employee where username = '"+mysqlUsername+"'"
-        }catch (Exception ce){
-            System.out.println(ce.getMessage());
-        }
 
         JButton logButton = new JButton("LOGIN ");
         logButton.setBounds(150,585,275,50);
         logButton.setFocusable(false);
         logButton.setBackground(new Color(0x1C97A3));
         logButton.setFont(new Font("Open Sans",Font.PLAIN,20));
-        logButton.addActionListener(e -> {});
+        logButton.addActionListener(e -> {
+            try{
+                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/petshop","root","1234");
+
+                System.out.println("connected");
+                String mysqlUsername = userField.getText();
+                String mysqlPassword = passField.getText();
+
+                Statement stm = con.createStatement();
+
+                String sql = "select * from employee where username = '"+mysqlUsername+"' and password = '"+mysqlPassword+"'";
+
+                ResultSet rs = stm.executeQuery(sql);
+                if (rs.next()){
+                    new CreateUser();
+                    dispose();
+                }else{
+                    JOptionPane.showMessageDialog(this,"wrong username or password!");
+                    userField.setText("");
+                    passField.setText("");
+
+                    con.close();
+                }
+            }catch (Exception ce){
+                System.out.println(ce.getMessage());
+            }
+        });
         add(logButton);
 
         JLabel newUser = new JLabel("CREATE NEW");
@@ -155,7 +169,6 @@ class Login extends JFrame{
     }
 
     public static void main(String[] args) {
-                new Login();
-
+        new Login();
     }
 }
