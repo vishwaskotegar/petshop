@@ -8,6 +8,7 @@ import javax.swing.*;
 class Login extends JFrame{
     Login(){
 
+
         setTitle("PET SHOP");
         setSize(500,700);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -69,7 +70,19 @@ class Login extends JFrame{
         logButton.setFocusable(false);
         logButton.setBackground(new Color(0x1C97A3));
         logButton.setFont(new Font("Open Sans",Font.PLAIN,20));
-        logButton.addActionListener(e -> {
+        logButton.setBorderPainted(false);
+        logButton.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseEntered(MouseEvent lb) {
+                logButton.setBackground(new Color(0x5EA8B3));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent lb) {
+                logButton.setBackground(new Color(0x1C97A3));
+            }
+        });
+        logButton.addActionListener(e -> {/*
             try{
                 Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/petshop","root","1234");
 
@@ -94,7 +107,9 @@ class Login extends JFrame{
                 }
             }catch (Exception ce){
                 System.out.println(ce.getMessage());
-            }
+            }*/
+            new CreateUser();
+            dispose();
         });
         add(logButton);
 
@@ -109,7 +124,7 @@ class Login extends JFrame{
 
             @Override
             public void mouseEntered(MouseEvent e){
-                newUser.setForeground(Color.WHITE.darker());
+                newUser.setForeground(new Color(0x1C97A3));
             }
 
             @Override
@@ -161,11 +176,17 @@ class Login extends JFrame{
         jicon.setIcon(icon);
         background.add(jicon);
 
-        jcancel.addActionListener(e -> System.exit(0));
+        jcancel.addActionListener(e ->{
+                    //int a = JOptionPane.showConfirmDialog(null,"Are you sure you want to exit the application?","Confirm exit",JOptionPane.YES_NO_OPTION);
+                    //if(a == 0)
+                        System.exit(0);
+                }
+                );
 
 
         setResizable(false);
         setVisible(true);
+
     }
 
     public static void main(String[] args) {

@@ -1,6 +1,8 @@
 package petshop;
 import java.awt.*;
 import java.awt.event.*;
+import java.sql.Connection;
+import java.sql.ResultSet;
 import javax.swing.*;
 
 
@@ -13,7 +15,12 @@ class CreateUser extends JFrame {
         //setUndecorated(true);
         setLocationRelativeTo(null);
 
+        // setExtendedState(JFrame.MAXIMIZED_BOTH);
 
+
+        Connector con = new Connector();
+
+        //ResultSet rs = con.s.executeQuery();
 
         setVisible(true);
     }
