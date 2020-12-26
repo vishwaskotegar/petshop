@@ -12,7 +12,7 @@ public class Connector {
     public Connector() {
 
         try {
-            c = DriverManager.getConnection("jdbc:mysql://localhost:3306/pharmacy", "root", "0830");
+            c = DriverManager.getConnection("jdbc:mysql://localhost:3306/petshop", "root", "1234");
             s = c.createStatement();
         } catch (Exception exc) {
             exc.printStackTrace();

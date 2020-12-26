@@ -8,7 +8,6 @@ import javax.swing.*;
 class Login extends JFrame{
     Login(){
 
-
         setTitle("PET SHOP");
         setSize(500,700);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -175,6 +174,7 @@ class Login extends JFrame{
         jicon.setBounds(80,0,500,500);
         jicon.setIcon(icon);
         background.add(jicon);
+        //setIconImage();
 
         jcancel.addActionListener(e ->{
                     //int a = JOptionPane.showConfirmDialog(null,"Are you sure you want to exit the application?","Confirm exit",JOptionPane.YES_NO_OPTION);
