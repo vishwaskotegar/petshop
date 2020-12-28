@@ -4,17 +4,27 @@ import net.proteanit.sql.DbUtils;
 
 import javax.swing.*;
 import java.awt.*;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 public class HomePage extends JFrame{
+
+    Connector con = new Connector();
+    JPanel panel = new JPanel();
+
     public HomePage(){
+
         setTitle("HOME PAGE");
         setSize(974, 1047);
         setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         setLayout(null);
         setExtendedState(JFrame.MAXIMIZED_BOTH);
-        setBackground(Color.DARK_GRAY);
+
         //setUndecorated(true);
         //setLocationRelativeTo(null);
 
@@ -33,9 +43,6 @@ public class HomePage extends JFrame{
         navigator.setBackground(Color.CYAN);
         navigator.setLayout(null);
         add(navigator);
-
-        JPanel contentArea = new JPanel();
-
 
         JButton selling = new JButton("SELL");
         selling.setBounds(30,20,225,50);
@@ -57,49 +64,16 @@ public class HomePage extends JFrame{
         editUser.setBounds(30,300,225,50);
         navigator.add(editUser);
 
-        JTable table = new JTable();
-        try {
-
-            Connector con = new Connector();
-            ResultSet rs = con.s.executeQuery("SELECT * FROM INVENTORY;");
-            table.setModel(DbUtils.resultSetToTableModel(rs));
-            JScrollPane pane = new JScrollPane(table);
-            pane.setBounds(900,50,500,200);
-            contentArea.add(pane);
-        }catch (SQLException se){
-            System.out.println(se);
-        }
-
-
-
         buying.addActionListener(e -> {
-            contentArea.setBounds(300,0,1700,1047);
-            contentArea.setLayout(null);
-            add(contentArea);
-
-            JButton bls = new JButton("BALINESE");
-            bls.setBounds(400,50,225,50);
-            contentArea.add(bls);
-
-            JButton kb = new JButton("KURILIAN BOBTAIL");
-            kb.setBounds(800,50,225,50);
-            contentArea.add(kb);
-
-            JButton  mk = new JButton("MUNCHKIN");
-            mk.setBounds(0,150,225,50);
-            contentArea.add(mk);
-
-            JButton p = new JButton("PERSIAN");
-            p.setBounds(400,150,225,50);
-            contentArea.add(p);
-
-            JButton s = new JButton("SIBERIAN");
-            s.setBounds(800,150,225,50);
-            contentArea.add(s);
+            add(new BuyContent().buyContent());
+            revalidate();
+            repaint();
         });
 
         setVisible(true);
     }
+
+
 
     public static void main(String[] args) {
         new HomePage();
