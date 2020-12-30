@@ -147,6 +147,8 @@ class CreateUser extends JFrame {
                 String sql = "INSERT INTO EMPLOYEE VALUES('"+mysqlUID+"','"+mysqlP+"','"+mysqlFN+"','"+mysqlLN+"','"+mysqlEm+"','"+mysqlPH+"')";
                 stm.executeUpdate(sql);
                 JOptionPane.showMessageDialog(this,"new user '"+mysqlUID+"' created");
+                new Login();
+                dispose();
             }catch (Exception ce){
                 System.out.println(ce.getMessage());
             }
@@ -180,11 +182,34 @@ class CreateUser extends JFrame {
         });
         panel.add(jcancel);
         jcancel.addActionListener(e ->{
-                    //int a = JOptionPane.showConfirmDialog(null,"Are you sure you want to exit the application?","Confirm exit",JOptionPane.YES_NO_OPTION);
-                    //if(a == 0)
+                    int a = JOptionPane.showConfirmDialog(null,"Are you sure you want to exit the application?","Confirm exit",JOptionPane.YES_NO_OPTION);
+                    if(a == 0)
                     System.exit(0);
                 }
         );
+
+        JLabel back = new JLabel("<");
+        //newUser.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+        back.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                new Login();
+                dispose();
+            }
+
+            @Override
+            public void mouseEntered(MouseEvent e){
+                back.setForeground(new Color(0x1C97A3));
+            }
+
+            @Override
+            public void mouseExited(MouseEvent e){
+                back.setForeground(Color.BLACK.darker());
+            }
+        });
+        back.setBounds(20,10,50,25);
+        back.setFont(new Font("",Font.PLAIN,50));
+        panel.add(back);
 
         ImageIcon bkg = new ImageIcon("resources\\PicsArt_07-18-08.47.54.jpg");
         JLabel background = new JLabel();
@@ -197,7 +222,10 @@ class CreateUser extends JFrame {
         jicon.setBounds(220,-20,500,300);
         jicon.setIcon(icon);
         background.add(jicon);
+
+
         setVisible(true);
+
     }
 
     public static void main(String[] args) {

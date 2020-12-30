@@ -62,6 +62,21 @@ class Login extends JFrame{
         passSeperator.setBounds(150,575,275,5);
         add(passSeperator);
 
+        JCheckBox hide = new JCheckBox("hide",true);
+        hide.setBounds(430,550,100,25);
+        hide.setFont(new Font("",Font.PLAIN,18));
+        hide.setFocusable(false);
+        hide.setContentAreaFilled(false);
+        char default1 = passField.getEchoChar();
+        hide.addActionListener(e -> {
+            if(hide.isSelected())
+                passField.setEchoChar(default1);
+            else
+                passField.setEchoChar((char)0);
+        });
+        hide.setOpaque(false);
+        add(hide);
+
 
 
         JButton logButton = new JButton("LOGIN ");
@@ -81,11 +96,10 @@ class Login extends JFrame{
                 logButton.setBackground(new Color(0x1C97A3));
             }
         });
-        logButton.addActionListener(e -> {/*
+        logButton.addActionListener(e -> {
             try{
                 Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/petshop","root","1234");
 
-                System.out.println("connected");
                 String mysqlUsername = userField.getText();
                 String mysqlPassword = passField.getText();
 
@@ -95,7 +109,7 @@ class Login extends JFrame{
 
                 ResultSet rs = stm.executeQuery(sql);
                 if (rs.next()){
-                    new CreateUser();
+                    new HomePage();
                     dispose();
                 }else{
                     JOptionPane.showMessageDialog(this,"wrong username or password!");
@@ -106,9 +120,7 @@ class Login extends JFrame{
                 }
             }catch (Exception ce){
                 System.out.println(ce.getMessage());
-            }*/
-            new CreateUser();
-            dispose();
+            }
         });
         add(logButton);
 
@@ -177,8 +189,8 @@ class Login extends JFrame{
         //setIconImage();
 
         jcancel.addActionListener(e ->{
-                    //int a = JOptionPane.showConfirmDialog(null,"Are you sure you want to exit the application?","Confirm exit",JOptionPane.YES_NO_OPTION);
-                    //if(a == 0)
+                    int a = JOptionPane.showConfirmDialog(null,"Are you sure you want to exit the application?","Confirm exit",JOptionPane.YES_NO_OPTION);
+                    if(a == 0)
                         System.exit(0);
                 }
                 );
