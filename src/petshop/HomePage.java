@@ -13,7 +13,6 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class HomePage extends JFrame{
-
     Connector con = new Connector();
     JPanel panel = new JPanel();
 
@@ -64,8 +63,10 @@ public class HomePage extends JFrame{
         editUser.setBounds(30,300,225,50);
         navigator.add(editUser);
 
+
+
         buying.addActionListener(e -> {
-            add(new BuyContent().buyContent());
+            add(panel = new BuyContent().buyContent());
             revalidate();
             repaint();
         });

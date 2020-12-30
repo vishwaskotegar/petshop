@@ -145,17 +145,15 @@ public class BuyContent extends JFrame {
                 try{
                     Connector con = new Connector();
                     con.s.executeUpdate("INSERT INTO inventory(pet,typeOrBreed,supplier,date,price,soldOrBought) VALUES ('"+petField.getText()+"','"+typeField.getText()+"','"+supplierField.getText()+"','"+dateField.getText()+"','"+priceField.getText()+"','bought')");
-                    JOptionPane.showMessageDialog(null,"added to inventory");
+                    //JOptionPane.showMessageDialog(null,"added to inventory");
 
 
                 }catch (Exception se){
                     System.out.println(se);
                 }
-
                 revalidate();
                 repaint();
-
-
+                viewTable();
             }
 
             @Override
@@ -173,7 +171,6 @@ public class BuyContent extends JFrame {
         buyContent.add(submit);
 
 
-
         revalidate();
         repaint();
         return buyContent;
@@ -182,6 +179,7 @@ public class BuyContent extends JFrame {
     private void viewTable() {
         JTable table = new JTable();
         try{
+
             ResultSet rs = con.s.executeQuery("SELECT * FROM INVENTORY;");
             table.setModel(DbUtils.resultSetToTableModel(rs));
             JScrollPane pane = new JScrollPane(table);
