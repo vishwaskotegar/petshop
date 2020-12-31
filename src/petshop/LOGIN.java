@@ -6,7 +6,7 @@ import javax.swing.*;
 
 
 class Login extends JFrame{
-    Login(){
+    Login(String preloadedUsername){
 
         setTitle("PET SHOP");
         setSize(500,700);
@@ -34,7 +34,7 @@ class Login extends JFrame{
         username.setFont(new Font("Open Sans",Font.PLAIN,20));
         add(username);
 
-        JTextField userField = new JTextField();
+        JTextField userField = new JTextField(preloadedUsername);
         userField.setBounds(155,500,275,25);
         userField.setFont(new Font("",Font.PLAIN,20));
         //userField.setForeground(new Color(77, 19, 209,50));
@@ -98,16 +98,15 @@ class Login extends JFrame{
         });
         logButton.addActionListener(e -> {
             try{
-                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/petshop","root","1234");
+                //Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/petshop","root","1234");
+                Connector con = new Connector();
+                //String mysqlUsername = ;
+                //String mysqlPassword = ;
+                //Statement stm = con.createStatement();
 
-                String mysqlUsername = userField.getText();
-                String mysqlPassword = passField.getText();
+                String sql = "select * from login where username = '"+userField.getText()+"' and password = '"+passField.getText()+"'";
 
-                Statement stm = con.createStatement();
-
-                String sql = "select * from employee where lid = '"+mysqlUsername+"' and password = '"+mysqlPassword+"'";
-
-                ResultSet rs = stm.executeQuery(sql);
+                ResultSet rs = con.s.executeQuery(sql);
                 if (rs.next()){
                     new HomePage();
                     dispose();
@@ -116,7 +115,7 @@ class Login extends JFrame{
                     userField.setText("");
                     passField.setText("");
 
-                    con.close();
+                    //con.close();
                 }
             }catch (Exception ce){
                 System.out.println(ce.getMessage());
@@ -202,6 +201,6 @@ class Login extends JFrame{
     }
 
     public static void main(String[] args) {
-        new Login();
+        new Login("");
     }
 }

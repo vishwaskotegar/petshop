@@ -139,8 +139,8 @@ public class BuyContent extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 try{
                     //Connector con = new Connector();
-                    con.s.executeUpdate("INSERT INTO inventory(pet,typeOrBreed,supplier,date,price,soldOrBought) " +
-                        "VALUES ('"+petField.getText()+"','"+typeField.getText()+"','"+supplierField.getText()+"'," +
+                    con.s.executeUpdate("INSERT INTO transaction " +
+                        "VALUES (DEFAULT,'"+dateField.getText()+"','"+supplierField.getText()+"'," +
                         "'"+dateField.getText()+"','"+priceField.getText() +"','bought')");
                     //JOptionPane.showMessageDialog(null,"added to inventory");
                     petField.setText("");
@@ -184,8 +184,7 @@ public class BuyContent extends JFrame {
     private void viewTable() {
         JTable table = new JTable();
         try{
-
-            ResultSet rs = con.s.executeQuery("SELECT * FROM INVENTORY ORDER BY id DESC LIMIT 10;");
+            ResultSet rs = con.s.executeQuery("SELECT Pet,TypeOrBreed,TotalQuantity,Price FROM INVENTORY i INNER JOIN PET p ");
             table.setModel(DbUtils.resultSetToTableModel(rs));
             //SQL command  ---> ALTER TABLE tablename AUTO_INCREMENT = 1
             JScrollPane pane = new JScrollPane(table);

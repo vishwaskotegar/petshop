@@ -1,19 +1,10 @@
 package petshop;
 
-import net.proteanit.sql.DbUtils;
-
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+
 
 public class HomePage extends JFrame{
-    Connector con = new Connector();
     JPanel panel;
 
     public HomePage(){
