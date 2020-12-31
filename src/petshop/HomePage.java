@@ -14,7 +14,7 @@ import java.util.Date;
 
 public class HomePage extends JFrame{
     Connector con = new Connector();
-    JPanel panel = new JPanel();
+    JPanel panel;
 
     public HomePage(){
 
@@ -63,12 +63,24 @@ public class HomePage extends JFrame{
         editUser.setBounds(30,300,225,50);
         navigator.add(editUser);
 
+        add(panel = new SellContent().sellContent());
+        revalidate();
+        repaint();
 
 
         buying.addActionListener(e -> {
+            remove(panel);
             add(panel = new BuyContent().buyContent());
             revalidate();
             repaint();
+        });
+
+        selling.addActionListener(e -> {
+            remove(panel);
+            add(panel = new SellContent().sellContent());
+            revalidate();
+            repaint();
+
         });
 
         setVisible(true);

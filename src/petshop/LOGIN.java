@@ -105,7 +105,7 @@ class Login extends JFrame{
 
                 Statement stm = con.createStatement();
 
-                String sql = "select * from employee where username = '"+mysqlUsername+"' and password = '"+mysqlPassword+"'";
+                String sql = "select * from employee where lid = '"+mysqlUsername+"' and password = '"+mysqlPassword+"'";
 
                 ResultSet rs = stm.executeQuery(sql);
                 if (rs.next()){

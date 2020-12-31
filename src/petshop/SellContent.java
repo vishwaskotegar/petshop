@@ -8,52 +8,52 @@ import java.sql.ResultSet;
 import java.text.*;
 import java.util.Date;
 
-public class BuyContent extends JFrame {
+public class SellContent extends JFrame {
     Connector con = new Connector();
-    JPanel buyContent = new JPanel();
+    JPanel sellContent = new JPanel();
 
 
-    public JPanel buyContent(){
+    public JPanel sellContent(){
 
-        buyContent.setBackground(Color.DARK_GRAY);
+        sellContent.setBackground(Color.LIGHT_GRAY);
 
 
         //table.setBackground(Color.DARK_GRAY);
         //table.setForeground(Color.WHITE);
 
-        buyContent.setBounds(300,0,1700,1047);
-        buyContent.setLayout(null);
+        sellContent.setBounds(300,0,1700,1047);
+        sellContent.setLayout(null);
 
         JLabel pet = new JLabel("PET");
         pet.setBounds(25,250,150,25);
         pet.setFont(new Font("Open Sans",Font.PLAIN,20));
         pet.setForeground(Color.WHITE);
-        buyContent.add(pet);
+        sellContent.add(pet);
 
         JLabel type = new JLabel("TYPE/BREED");
         type.setBounds(25,300,150,25);
         type.setFont(new Font("Open Sans",Font.PLAIN,20));
         type.setForeground(Color.WHITE);
-        buyContent.add(type);
+        sellContent.add(type);
 
         JLabel  supplier = new JLabel("SUPPLIER");
         supplier.setBounds(25,350,150,25);
         supplier.setFont(new Font("Open Sans",Font.PLAIN,20));
         supplier.setForeground(Color.WHITE);
-        buyContent.add(supplier);
+        sellContent.add(supplier);
 
 
         JLabel jdate = new JLabel("DATE");
         jdate.setBounds(25,400,150,25);
         jdate.setFont(new Font("Open Sans",Font.PLAIN,20));
         jdate.setForeground(Color.WHITE);
-        buyContent.add(jdate);
+        sellContent.add(jdate);
 
         JLabel price = new JLabel("PRICE");
         price.setBounds(25,450,150,25);
         price.setFont(new Font("Open Sans",Font.PLAIN,20));
         price.setForeground(Color.WHITE);
-        buyContent.add(price);
+        sellContent.add(price);
 
 
 
@@ -64,7 +64,7 @@ public class BuyContent extends JFrame {
         petField.setCaretColor(Color.WHITE);
         petField.setBorder(null);
         petField.setOpaque(false);
-        buyContent.add(petField);
+        sellContent.add(petField);
 
         JTextField typeField = new JTextField();
         typeField.setBounds(170,300,275,25);
@@ -73,7 +73,7 @@ public class BuyContent extends JFrame {
         typeField.setForeground(Color.WHITE);
         typeField.setBorder(null);
         typeField.setOpaque(false);
-        buyContent.add(typeField);
+        sellContent.add(typeField);
 
         JTextField supplierField = new JTextField();
         supplierField.setBounds(170,350,275,25);
@@ -82,7 +82,7 @@ public class BuyContent extends JFrame {
         supplierField.setForeground(Color.WHITE);
         supplierField.setBorder(null);
         supplierField.setOpaque(false);
-        buyContent.add(supplierField);
+        sellContent.add(supplierField);
 
         /*DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         java.util.Date date = new Date();
@@ -98,36 +98,42 @@ public class BuyContent extends JFrame {
         dateField.setCaretColor(Color.WHITE);
         dateField.setBorder(null);
         dateField.setOpaque(false);
-        buyContent.add(dateField);
+        sellContent.add(dateField);
 
         JTextField priceField = new JTextField();
+        /*try{
+            ResultSet rs = con.s.executeQuery("select * from inventory where id = '6'");
+            priceField.setText(rs.getString(6));
+        }catch (Exception se){
+            System.out.println(se);
+        }*/
         priceField.setBounds(170,450,275,25);
         priceField.setFont(new Font("",Font.PLAIN,20));
         priceField.setForeground(Color.WHITE);
         priceField.setCaretColor(Color.WHITE);
         priceField.setBorder(null);
         priceField.setOpaque(false);
-        buyContent.add(priceField);
+        sellContent.add(priceField);
 
         JSeparator s1 = new JSeparator();
         s1.setBounds(165,275,275,5);
-        buyContent.add(s1);
+        sellContent.add(s1);
 
         JSeparator s2 = new JSeparator();
         s2.setBounds(165,325,275,5);
-        buyContent.add(s2);
+        sellContent.add(s2);
 
         JSeparator s3 = new JSeparator();
         s3.setBounds(165,375,275,5);
-        buyContent.add(s3);
+        sellContent.add(s3);
 
         JSeparator s4 = new JSeparator();
         s4.setBounds(165,425,275,5);
-        buyContent.add(s4);
+        sellContent.add(s4);
 
         JSeparator s5 = new JSeparator();
         s5.setBounds(165,475,275,5);
-        buyContent.add(s5);
+        sellContent.add(s5);
 
 
         JLabel submit = new JLabel("ADD TO INVENTORY");
@@ -140,8 +146,8 @@ public class BuyContent extends JFrame {
                 try{
                     //Connector con = new Connector();
                     con.s.executeUpdate("INSERT INTO inventory(pet,typeOrBreed,supplier,date,price,soldOrBought) " +
-                        "VALUES ('"+petField.getText()+"','"+typeField.getText()+"','"+supplierField.getText()+"'," +
-                        "'"+dateField.getText()+"','"+priceField.getText() +"','bought')");
+                            "VALUES ('"+petField.getText()+"','"+typeField.getText()+"','"+supplierField.getText()+"'," +
+                            "'"+dateField.getText()+"','"+priceField.getText() +"','bought')");
                     //JOptionPane.showMessageDialog(null,"added to inventory");
                     petField.setText("");
                     petField.requestFocus();
@@ -156,7 +162,7 @@ public class BuyContent extends JFrame {
                 }
 
 
-               // revalidate();
+                // revalidate();
                 //repaint();
                 viewTable();
             }
@@ -173,24 +179,24 @@ public class BuyContent extends JFrame {
         });
         submit.setBounds(220,500,200,25);
         submit.setFont(new Font("",Font.PLAIN,20));
-        buyContent.add(submit);
+        sellContent.add(submit);
 
         viewTable();
         revalidate();
         repaint();
-        return buyContent;
+        return sellContent;
     }
 
     private void viewTable() {
         JTable table = new JTable();
         try{
 
-            ResultSet rs = con.s.executeQuery("SELECT * FROM INVENTORY ORDER BY id DESC LIMIT 10;");
+            ResultSet rs = con.s.executeQuery("SELECT * FROM INVENTORY;");
             table.setModel(DbUtils.resultSetToTableModel(rs));
             //SQL command  ---> ALTER TABLE tablename AUTO_INCREMENT = 1
             JScrollPane pane = new JScrollPane(table);
             pane.setBounds(900,50,600,200);
-            buyContent.add(pane);
+            sellContent.add(pane);
         }catch(Exception se){
             System.out.println(se);
         }
