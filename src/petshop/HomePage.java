@@ -50,9 +50,9 @@ public class HomePage extends JFrame{
         transactions.setBounds(30,230,225,50);
         navigator.add(transactions);
 
-        JButton editUser = new JButton("EDIT USER");
-        editUser.setBounds(30,300,225,50);
-        navigator.add(editUser);
+        JButton editProfile = new JButton("EDIT PROFILE");
+        editProfile.setBounds(30,300,225,50);
+        navigator.add(editProfile);
 
         add(panel = new SellContent().sellContent());
         revalidate();
@@ -73,6 +73,15 @@ public class HomePage extends JFrame{
             repaint();
 
         });
+
+        editProfile.addActionListener(e -> {
+            remove(panel);
+            add(panel = new editContent().editContent());
+            revalidate();
+            repaint();
+        });
+
+
 
         setVisible(true);
     }

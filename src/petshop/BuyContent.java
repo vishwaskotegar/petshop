@@ -57,13 +57,29 @@ public class BuyContent extends JFrame {
 
 
 
-        JTextField petField = new JTextField();
+        /*JTextField petField = new JTextField();
         petField.setBounds(170,250,275,25);
         petField.setFont(new Font("",Font.PLAIN,20));
         petField.setForeground(Color.WHITE);
         petField.setCaretColor(Color.WHITE);
         petField.setBorder(null);
         petField.setOpaque(false);
+        buyContent.add(petField);*/
+
+        JComboBox petField = new JComboBox();
+        petField.setBounds(170,250,275,25);
+        petField.setOpaque(false);
+        try{
+            Connector con = new Connector();
+            ResultSet rs = con.s.executeQuery("SELECT DISTINCT Pet " +
+                    "FROM pet p,inventory i " +
+                    "WHERE i.TotalQuantity IS NOT NULL AND i.P_id = p.P_id");
+            while(rs.next()){
+                petField.addItem(rs.getString(1));
+            }
+        }catch(Exception ce){
+            ce.printStackTrace();
+        }
         buyContent.add(petField);
 
         JTextField typeField = new JTextField();
@@ -143,7 +159,7 @@ public class BuyContent extends JFrame {
                         "VALUES (DEFAULT,'"+dateField.getText()+"','"+supplierField.getText()+"'," +
                         "'"+dateField.getText()+"','"+priceField.getText() +"','bought')");
                     //JOptionPane.showMessageDialog(null,"added to inventory");
-                    petField.setText("");
+                    //petField.setText("");
                     petField.requestFocus();
                     typeField.setText("");
                     supplierField.setText("");
@@ -184,7 +200,9 @@ public class BuyContent extends JFrame {
     private void viewTable() {
         JTable table = new JTable();
         try{
-            ResultSet rs = con.s.executeQuery("SELECT Pet,TypeOrBreed,TotalQuantity,Price FROM INVENTORY i INNER JOIN PET p ");
+            ResultSet rs = con.s.executeQuery("SELECT Pet,TypeOrBreed,TotalQuantity,Price" +
+                    " FROM INVENTORY i , PET p " +
+                    "WHERE p.P_id = i.P_id");
             table.setModel(DbUtils.resultSetToTableModel(rs));
             //SQL command  ---> ALTER TABLE tablename AUTO_INCREMENT = 1
             JScrollPane pane = new JScrollPane(table);

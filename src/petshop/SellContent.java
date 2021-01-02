@@ -17,12 +17,17 @@ public class SellContent extends JFrame {
 
         sellContent.setBackground(Color.LIGHT_GRAY);
 
-
         //table.setBackground(Color.DARK_GRAY);
         //table.setForeground(Color.WHITE);
 
         sellContent.setBounds(300,0,1700,1047);
         sellContent.setLayout(null);
+
+        JLabel customerName = new JLabel("CUSTOMER NAME");
+        customerName.setBounds(25,200,200,25);
+        customerName.setFont(new Font("Open Sans",Font.PLAIN,20));
+        customerName.setForeground(Color.WHITE);
+        sellContent.add(customerName);
 
         JLabel pet = new JLabel("PET");
         pet.setBounds(25,250,150,25);
@@ -55,10 +60,17 @@ public class SellContent extends JFrame {
         price.setForeground(Color.WHITE);
         sellContent.add(price);
 
-
+        JTextField customerField = new JTextField();
+        customerField.setBounds(220,200,275,25);
+        customerField.setFont(new Font("",Font.PLAIN,20));
+        customerField.setForeground(Color.WHITE);
+        customerField.setCaretColor(Color.WHITE);
+        customerField.setBorder(null);
+        customerField.setOpaque(false);
+        sellContent.add(customerField);
 
         JTextField petField = new JTextField();
-        petField.setBounds(170,250,275,25);
+        petField.setBounds(220,250,275,25);
         petField.setFont(new Font("",Font.PLAIN,20));
         petField.setForeground(Color.WHITE);
         petField.setCaretColor(Color.WHITE);
@@ -67,7 +79,7 @@ public class SellContent extends JFrame {
         sellContent.add(petField);
 
         JTextField typeField = new JTextField();
-        typeField.setBounds(170,300,275,25);
+        typeField.setBounds(220,300,275,25);
         typeField.setFont(new Font("",Font.PLAIN,20));
         typeField.setCaretColor(Color.WHITE);
         typeField.setForeground(Color.WHITE);
@@ -76,7 +88,7 @@ public class SellContent extends JFrame {
         sellContent.add(typeField);
 
         JTextField supplierField = new JTextField();
-        supplierField.setBounds(170,350,275,25);
+        supplierField.setBounds(220,350,275,25);
         supplierField.setFont(new Font("",Font.PLAIN,20));
         supplierField.setCaretColor(Color.WHITE);
         supplierField.setForeground(Color.WHITE);
@@ -92,7 +104,7 @@ public class SellContent extends JFrame {
         java.util.Date date = new Date();
 
         JTextField dateField = new JTextField(dateFormat.format(date));
-        dateField.setBounds(170,400,275,25);
+        dateField.setBounds(220,400,275,25);
         dateField.setFont(new Font("",Font.PLAIN,20));
         dateField.setForeground(Color.WHITE);
         dateField.setCaretColor(Color.WHITE);
@@ -107,7 +119,7 @@ public class SellContent extends JFrame {
         }catch (Exception se){
             System.out.println(se);
         }*/
-        priceField.setBounds(170,450,275,25);
+        priceField.setBounds(220,450,275,25);
         priceField.setFont(new Font("",Font.PLAIN,20));
         priceField.setForeground(Color.WHITE);
         priceField.setCaretColor(Color.WHITE);
@@ -115,32 +127,36 @@ public class SellContent extends JFrame {
         priceField.setOpaque(false);
         sellContent.add(priceField);
 
+        JSeparator s0 = new JSeparator();
+        s0.setBounds(215,225,275,5);
+        sellContent.add(s0);
+
         JSeparator s1 = new JSeparator();
-        s1.setBounds(165,275,275,5);
+        s1.setBounds(215,275,275,5);
         sellContent.add(s1);
 
         JSeparator s2 = new JSeparator();
-        s2.setBounds(165,325,275,5);
+        s2.setBounds(215,325,275,5);
         sellContent.add(s2);
 
         JSeparator s3 = new JSeparator();
-        s3.setBounds(165,375,275,5);
+        s3.setBounds(215,375,275,5);
         sellContent.add(s3);
 
         JSeparator s4 = new JSeparator();
-        s4.setBounds(165,425,275,5);
+        s4.setBounds(215,425,275,5);
         sellContent.add(s4);
 
         JSeparator s5 = new JSeparator();
-        s5.setBounds(165,475,275,5);
+        s5.setBounds(215,475,275,5);
         sellContent.add(s5);
 
 
-        JLabel submit = new JLabel("ADD TO INVENTORY");
-        submit.setForeground(Color.BLACK.darker());
-        submit.setFocusable(true);
+        JLabel sell = new JLabel("SELL");
+        sell.setForeground(Color.BLACK.darker());
+        sell.setFocusable(true);
         //newUser.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        submit.addMouseListener(new MouseAdapter() {
+        sell.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 try{
@@ -169,17 +185,17 @@ public class SellContent extends JFrame {
 
             @Override
             public void mouseEntered(MouseEvent e){
-                submit.setForeground(new Color(0x1C97A3));
+                sell.setForeground(new Color(0x1C97A3));
             }
 
             @Override
             public void mouseExited(MouseEvent e){
-                submit.setForeground(Color.BLACK.darker());
+                sell.setForeground(Color.BLACK.darker());
             }
         });
-        submit.setBounds(220,500,200,25);
-        submit.setFont(new Font("",Font.PLAIN,20));
-        sellContent.add(submit);
+        sell.setBounds(220,500,200,25);
+        sell.setFont(new Font("",Font.PLAIN,20));
+        sellContent.add(sell);
 
         viewTable();
         revalidate();

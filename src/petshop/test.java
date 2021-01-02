@@ -7,6 +7,9 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 public class test extends JFrame {
+    private JComboBox comboBox1;
+    private JPanel panel1;
+
     public test(){
         JTable table = new JTable();
         try {
