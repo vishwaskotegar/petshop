@@ -23,11 +23,6 @@ public class SellContent extends JFrame {
         sellContent.setBounds(300,0,1700,1047);
         sellContent.setLayout(null);
 
-        JLabel customerName = new JLabel("CUSTOMER NAME");
-        customerName.setBounds(25,200,200,25);
-        customerName.setFont(new Font("Open Sans",Font.PLAIN,20));
-        customerName.setForeground(Color.WHITE);
-        sellContent.add(customerName);
 
         JLabel pet = new JLabel("PET");
         pet.setBounds(25,250,150,25);
@@ -41,11 +36,11 @@ public class SellContent extends JFrame {
         type.setForeground(Color.WHITE);
         sellContent.add(type);
 
-        JLabel  supplier = new JLabel("SUPPLIER");
-        supplier.setBounds(25,350,150,25);
-        supplier.setFont(new Font("Open Sans",Font.PLAIN,20));
-        supplier.setForeground(Color.WHITE);
-        sellContent.add(supplier);
+        JLabel  customer = new JLabel("CUSTOMER NAME");
+        customer.setBounds(25,350,200,25);
+        customer.setFont(new Font("Open Sans",Font.PLAIN,20));
+        customer.setForeground(Color.WHITE);
+        sellContent.add(customer);
 
 
         JLabel jdate = new JLabel("DATE");
@@ -60,16 +55,26 @@ public class SellContent extends JFrame {
         price.setForeground(Color.WHITE);
         sellContent.add(price);
 
-        JTextField customerField = new JTextField();
-        customerField.setBounds(220,200,275,25);
-        customerField.setFont(new Font("",Font.PLAIN,20));
-        customerField.setForeground(Color.WHITE);
-        customerField.setCaretColor(Color.WHITE);
-        customerField.setBorder(null);
-        customerField.setOpaque(false);
-        sellContent.add(customerField);
 
-        JTextField petField = new JTextField();
+        JComboBox petField = new JComboBox();
+        petField.setBounds(220,250,275,30);
+        petField.setOpaque(true);
+        try{
+            Connector con = new Connector();
+            ResultSet rs = con.s.executeQuery("SELECT DISTINCT Pet " +
+                    "FROM pet p,inventory i " +
+                    "WHERE i.TotalQuantity IS NOT NULL AND i.P_id = p.P_id");
+            while(rs.next()){
+                petField.addItem(rs.getString(1));
+                petField.setFont(new Font("",Font.PLAIN,20));
+                petField.setOpaque(true);
+            }
+        }catch(Exception ce){
+            ce.printStackTrace();
+        }
+        sellContent.add(petField);
+
+        /*JTextField petField = new JTextField();
         petField.setBounds(220,250,275,25);
         petField.setFont(new Font("",Font.PLAIN,20));
         petField.setForeground(Color.WHITE);
@@ -77,7 +82,7 @@ public class SellContent extends JFrame {
         petField.setBorder(null);
         petField.setOpaque(false);
         sellContent.add(petField);
-
+*/
         JTextField typeField = new JTextField();
         typeField.setBounds(220,300,275,25);
         typeField.setFont(new Font("",Font.PLAIN,20));
@@ -87,14 +92,14 @@ public class SellContent extends JFrame {
         typeField.setOpaque(false);
         sellContent.add(typeField);
 
-        JTextField supplierField = new JTextField();
-        supplierField.setBounds(220,350,275,25);
-        supplierField.setFont(new Font("",Font.PLAIN,20));
-        supplierField.setCaretColor(Color.WHITE);
-        supplierField.setForeground(Color.WHITE);
-        supplierField.setBorder(null);
-        supplierField.setOpaque(false);
-        sellContent.add(supplierField);
+        JTextField customerField = new JTextField();
+        customerField.setBounds(220,350,275,25);
+        customerField.setFont(new Font("",Font.PLAIN,20));
+        customerField.setCaretColor(Color.WHITE);
+        customerField.setForeground(Color.WHITE);
+        customerField.setBorder(null);
+        customerField.setOpaque(false);
+        sellContent.add(customerField);
 
         /*DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         java.util.Date date = new Date();
@@ -127,13 +132,6 @@ public class SellContent extends JFrame {
         priceField.setOpaque(false);
         sellContent.add(priceField);
 
-        JSeparator s0 = new JSeparator();
-        s0.setBounds(215,225,275,5);
-        sellContent.add(s0);
-
-        JSeparator s1 = new JSeparator();
-        s1.setBounds(215,275,275,5);
-        sellContent.add(s1);
 
         JSeparator s2 = new JSeparator();
         s2.setBounds(215,325,275,5);
@@ -162,13 +160,13 @@ public class SellContent extends JFrame {
                 try{
                     //Connector con = new Connector();
                     con.s.executeUpdate("INSERT INTO inventory(pet,typeOrBreed,supplier,date,price,soldOrBought) " +
-                            "VALUES ('"+petField.getText()+"','"+typeField.getText()+"','"+supplierField.getText()+"'," +
+                            "VALUES ('"+petField.getSelectedItem()+"','"+typeField.getText()+"','"+customerField.getText()+"'," +
                             "'"+dateField.getText()+"','"+priceField.getText() +"','bought')");
                     //JOptionPane.showMessageDialog(null,"added to inventory");
-                    petField.setText("");
+                    //petField.setText("");
                     petField.requestFocus();
                     typeField.setText("");
-                    supplierField.setText("");
+                    customerField.setText("");
                     //dateField.setText("");
                     priceField.setText("");
 

@@ -57,30 +57,15 @@ public class BuyContent extends JFrame {
 
 
 
-        /*JTextField petField = new JTextField();
+        JTextField petField = new JTextField();
         petField.setBounds(170,250,275,25);
         petField.setFont(new Font("",Font.PLAIN,20));
         petField.setForeground(Color.WHITE);
         petField.setCaretColor(Color.WHITE);
         petField.setBorder(null);
         petField.setOpaque(false);
-        buyContent.add(petField);*/
-
-        JComboBox petField = new JComboBox();
-        petField.setBounds(170,250,275,25);
-        petField.setOpaque(false);
-        try{
-            Connector con = new Connector();
-            ResultSet rs = con.s.executeQuery("SELECT DISTINCT Pet " +
-                    "FROM pet p,inventory i " +
-                    "WHERE i.TotalQuantity IS NOT NULL AND i.P_id = p.P_id");
-            while(rs.next()){
-                petField.addItem(rs.getString(1));
-            }
-        }catch(Exception ce){
-            ce.printStackTrace();
-        }
         buyContent.add(petField);
+
 
         JTextField typeField = new JTextField();
         typeField.setBounds(170,300,275,25);
