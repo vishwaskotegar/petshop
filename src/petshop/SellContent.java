@@ -13,16 +13,35 @@ public class SellContent extends JFrame {
     JPanel sellContent = new JPanel();
 
 
-    public JPanel sellContent(){
+    public JPanel sellContent(String empName){
 
-        sellContent.setBackground(Color.LIGHT_GRAY);
+        sellContent.setBackground(Color.DARK_GRAY);
 
         //table.setBackground(Color.DARK_GRAY);
         //table.setForeground(Color.WHITE);
 
+
+
+        JLabel profile = new JLabel("SELLING");
+        profile.setBounds(45,50,550,40);
+        profile.setFont(new Font("Open Sans",Font.PLAIN,50));
+        profile.setForeground(Color.WHITE);
+        sellContent.add(profile);
+
         sellContent.setBounds(300,0,1700,1047);
         sellContent.setLayout(null);
 
+        JLabel emp = new JLabel("EMPLOYEE NAME - "+empName,SwingConstants.RIGHT);
+        emp.setBounds(1150,80,400,25);
+        emp.setFont(new Font("Open Sans",Font.PLAIN,20));
+        emp.setForeground(Color.WHITE);
+        sellContent.add(emp);
+
+        JLabel cusPhone = new JLabel("CUSTOMER PHNO.");
+        cusPhone.setBounds(25,200,200,25);
+        cusPhone.setFont(new Font("Open Sans",Font.PLAIN,20));
+        cusPhone.setForeground(Color.WHITE);
+        sellContent.add(cusPhone);
 
         JLabel pet = new JLabel("PET");
         pet.setBounds(25,250,150,25);
@@ -63,7 +82,7 @@ public class SellContent extends JFrame {
             Connector con = new Connector();
             ResultSet rs = con.s.executeQuery("SELECT DISTINCT Pet " +
                     "FROM pet p,inventory i " +
-                    "WHERE i.TotalQuantity IS NOT NULL AND i.P_id = p.P_id");
+                    "WHERE i.TQuantity IS NOT NULL AND i.pID = p.pID");
             while(rs.next()){
                 petField.addItem(rs.getString(1));
                 petField.setFont(new Font("",Font.PLAIN,20));
@@ -74,19 +93,20 @@ public class SellContent extends JFrame {
         }
         sellContent.add(petField);
 
-        /*JTextField petField = new JTextField();
-        petField.setBounds(220,250,275,25);
-        petField.setFont(new Font("",Font.PLAIN,20));
-        petField.setForeground(Color.WHITE);
-        petField.setCaretColor(Color.WHITE);
-        petField.setBorder(null);
-        petField.setOpaque(false);
-        sellContent.add(petField);
-*/
-        JTextField typeField = new JTextField();
+
+        JTextField customerPhno = new JTextField();
+        customerPhno.setBounds(220,200,275,25);
+        customerPhno.setFont(new Font("",Font.PLAIN,20));
+        customerPhno.setForeground(Color.WHITE);
+        customerPhno.setCaretColor(Color.WHITE);
+        customerPhno.setBorder(null);
+        customerPhno.setOpaque(false);
+        sellContent.add(customerPhno);
+
+        JComboBox typeField = new JComboBox();
         typeField.setBounds(220,300,275,25);
         typeField.setFont(new Font("",Font.PLAIN,20));
-        typeField.setCaretColor(Color.WHITE);
+        //typeField.setCaretColor(Color.WHITE);
         typeField.setForeground(Color.WHITE);
         typeField.setBorder(null);
         typeField.setOpaque(false);
@@ -132,10 +152,13 @@ public class SellContent extends JFrame {
         priceField.setOpaque(false);
         sellContent.add(priceField);
 
+        JSeparator s1 = new JSeparator();
+        s1.setBounds(215,225,275,5);
+        sellContent.add(s1);
 
-        JSeparator s2 = new JSeparator();
+        /*JSeparator s2 = new JSeparator();
         s2.setBounds(215,325,275,5);
-        sellContent.add(s2);
+        sellContent.add(s2);*/
 
         JSeparator s3 = new JSeparator();
         s3.setBounds(215,375,275,5);
@@ -157,15 +180,15 @@ public class SellContent extends JFrame {
         sell.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                try{
+                /*try{
                     //Connector con = new Connector();
                     con.s.executeUpdate("INSERT INTO inventory(pet,typeOrBreed,supplier,date,price,soldOrBought) " +
-                            "VALUES ('"+petField.getSelectedItem()+"','"+typeField.getText()+"','"+customerField.getText()+"'," +
+                            "VALUES ('"+petField.getSelectedItem()+"','"+typeField.getSelectedItem()+"','"+customerField.getText()+"'," +
                             "'"+dateField.getText()+"','"+priceField.getText() +"','bought')");
                     //JOptionPane.showMessageDialog(null,"added to inventory");
                     //petField.setText("");
                     petField.requestFocus();
-                    typeField.setText("");
+                    //typeField.setText("");
                     customerField.setText("");
                     //dateField.setText("");
                     priceField.setText("");
@@ -173,12 +196,13 @@ public class SellContent extends JFrame {
                 }catch (Exception se){
                     System.out.println(se);
                     JOptionPane.showMessageDialog(null,se);
-                }
+                }*/
 
 
                 // revalidate();
                 //repaint();
                 viewTable();
+                new Billing();
             }
 
             @Override
@@ -191,7 +215,7 @@ public class SellContent extends JFrame {
                 sell.setForeground(Color.BLACK.darker());
             }
         });
-        sell.setBounds(220,500,200,25);
+        sell.setBounds(220,500,55,25);
         sell.setFont(new Font("",Font.PLAIN,20));
         sellContent.add(sell);
 
@@ -207,9 +231,12 @@ public class SellContent extends JFrame {
 
             ResultSet rs = con.s.executeQuery("SELECT * FROM INVENTORY;");
             table.setModel(DbUtils.resultSetToTableModel(rs));
+            table.setFont(new Font("",Font.PLAIN,20));
+            table.getTableHeader().setFont(new Font(null,Font.PLAIN,18));
+            table.setRowHeight(30);
             //SQL command  ---> ALTER TABLE tablename AUTO_INCREMENT = 1
             JScrollPane pane = new JScrollPane(table);
-            pane.setBounds(900,50,600,200);
+            pane.setBounds(600,200,800,600);
             sellContent.add(pane);
         }catch(Exception se){
             System.out.println(se);

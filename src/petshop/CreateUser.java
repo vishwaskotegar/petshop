@@ -151,7 +151,7 @@ class CreateUser extends JFrame {
                         JOptionPane.showMessageDialog(this, "Username already exits!");
                     } else {
                         stm.executeUpdate("INSERT INTO login VALUES(DEFAULT,'" + userField.getText() + "','" + passField.getText() + "');");
-                        String sql = "INSERT INTO EMPLOYEE VALUES(LAST_INSERT_ID(),'" + mysqlFN + "','" + mysqlLN + "','" + mysqlEm + "','" + mysqlPH + "')";
+                        String sql = "INSERT INTO EMP VALUES(LAST_INSERT_ID(),'" + mysqlFN + "','" + mysqlLN + "','" + mysqlEm + "','" + mysqlPH + "')";
                         stm.executeUpdate(sql);
                         JOptionPane.showMessageDialog(this, "new user '" + mysqlUID + "' created");
                         new Login(mysqlUID);
@@ -163,7 +163,7 @@ class CreateUser extends JFrame {
 
 
             }catch (Exception ce){
-                System.out.println(ce.getMessage());
+                ce.printStackTrace();
             }
         });
 

@@ -104,15 +104,18 @@ class Login extends JFrame{
                 //String mysqlPassword = ;
                 //Statement stm = con.createStatement();
 
-                String sql = "select * from login where username = '"+userField.getText()+"' and password = '"+passField.getText()+"'";
+                String sql = "select lID from login where username = '"+userField.getText()+"' and password = '"+passField.getText()+"'";
 
                 ResultSet rs = con.s.executeQuery(sql);
+
+
                 if (rs.next()){
-                    new HomePage();
+                    String Lid = rs.getString(1);
+                    new HomePage(Lid);
                     dispose();
                 }else{
                     JOptionPane.showMessageDialog(this,"wrong username or password!");
-                    userField.setText("");
+                    //userField.setText("");
                     passField.setText("");
 
                     //con.close();
@@ -188,11 +191,12 @@ class Login extends JFrame{
         //setIconImage();
 
         jcancel.addActionListener(e ->{
-                    int a = JOptionPane.showConfirmDialog(null,"Are you sure you want to exit the application?","Confirm exit",JOptionPane.YES_NO_OPTION);
+                    int a = JOptionPane.showConfirmDialog(this,"Are you sure you want to exit the application?","Confirm exit",JOptionPane.YES_NO_OPTION);
+                    System.out.println(a);
                     if(a == 0)
                         System.exit(0);
                 }
-                );
+        );
 
 
         setResizable(false);

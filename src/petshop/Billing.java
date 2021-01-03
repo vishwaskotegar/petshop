@@ -11,9 +11,9 @@ public class Billing extends JFrame{
 
         setTitle("BILLING");
         setSize(974, 1047);
-        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(null);
-        //setLocationRelativeTo(null);
+        setLocationRelativeTo(null);
 
         //setUndecorated(true);
         //setLocationRelativeTo(null);
