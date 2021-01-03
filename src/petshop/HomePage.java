@@ -67,9 +67,9 @@ public class HomePage extends JFrame{
         String empName = "";
         try{
             Connector con = new Connector();
-            ResultSet rs = con.s.executeQuery("SELECT Fname,Lname from emp where lID = "+Lid);
+            ResultSet rs = con.s.executeQuery("SELECT Fname from emp where lID = "+Lid);
             if (rs.next()) {
-                empName = (rs.getString(1)+" "+(rs.getString(2)));
+                empName = (rs.getString(1));
             }
         }catch(Exception ce){
             ce.printStackTrace();
@@ -141,6 +141,6 @@ public class HomePage extends JFrame{
 
 
     public static void main(String[] args) {
-        new HomePage(null);
+        new HomePage("2");
     }
 }

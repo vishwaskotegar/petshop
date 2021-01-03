@@ -200,23 +200,18 @@ public class EditContent extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 int choice = JOptionPane.showConfirmDialog(editContent,"Are you sure you want to delete your account?","CONFIRM DELETE",JOptionPane.YES_NO_OPTION);
                 if (choice == 0){
-                    /*try{
-                    //Connector con = new Connector();
-                    con.s.executeUpdate("INSERT INTO transaction " +
-                            "VALUES (DEFAULT,'"+phoneField.getText()+"','"+emailField.getText()+"'," +
-                            "'"+phoneField.getText()+"','"+userField.getText() +"','bought')");
-                    //JOptionPane.showMessageDialog(null,"added to inventory");
-                    //petField.setText("");
-                    firstNameField.requestFocus();
-                    lastNameField.setText("");
-                    emailField.setText("");
-                    //dateField.setText("");
-                    userField.setText("");
+                    try{
+                        con.s.executeUpdate("DELETE FROM login where lID = " +
+                                "(SELECT lID FROM emp WHERE fName = '"+empName+"')");
+                        JOptionPane.showMessageDialog(editContent,"User Removed");
+                        new Login("");
+                        JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(editContent);
+                        frame.dispose();
 
-                }catch (Exception se){
-                    System.out.println(se);
-                    JOptionPane.showMessageDialog(null,se);
-                }*/
+                    }catch (Exception se){
+                        se.printStackTrace();
+                        JOptionPane.showMessageDialog(null,se);
+                    }
 
                 }
 
