@@ -72,7 +72,7 @@ public class BuyContent extends JFrame {
         buyContent.add(type);
 
         JRadioButton breed = new JRadioButton("BREED");
-        breed.setBounds(170,350,150,25);
+        breed.setBounds(220,350,150,25);
         breed.setFont(new Font("Open Sans",Font.PLAIN,20));
         breed.setOpaque(false);
 //        breed.setFocusable(false);
@@ -80,7 +80,7 @@ public class BuyContent extends JFrame {
         buyContent.add(breed);
 
         JRadioButton accessories = new JRadioButton("ACCESSORY");
-        accessories.setBounds(300,350,150,25);
+        accessories.setBounds(350,350,150,25);
         accessories.setFont(new Font("Open Sans",Font.PLAIN,20));
         accessories.setOpaque(false);
 //        breed.setFocusable(false);
@@ -97,11 +97,11 @@ public class BuyContent extends JFrame {
         buyContent.add(supplier);
 
         JSeparator s1 = new JSeparator();
-        s1.setBounds(165,275,275,5);
+        s1.setBounds(220,275,275,5);
         buyContent.add(s1);
 
         JComboBox petField = new JComboBox();
-        petField.setBounds(165,300,275,25);
+        petField.setBounds(220,300,275,30);
         petField.setOpaque(true);
         try{
             Connector con = new Connector();
@@ -119,7 +119,7 @@ public class BuyContent extends JFrame {
         buyContent.add(petField);
 
         JTextField supplierField = new JTextField();
-        supplierField.setBounds(170, 250,275,25);
+        supplierField.setBounds(225, 250,275,25);
         supplierField.setFont(new Font("",Font.PLAIN,20));
         supplierField.setCaretColor(Color.WHITE);
         supplierField.setForeground(Color.WHITE);
@@ -134,21 +134,8 @@ public class BuyContent extends JFrame {
         buyContent.add(name);
 
         JComboBox nameField = new JComboBox();
-        nameField.setBounds(165,400,275,25);
+        nameField.setBounds(220,400,275,30);
         nameField.setOpaque(true);
-        try{
-            Connector con = new Connector();
-            ResultSet rs = con.s.executeQuery("SELECT DISTINCT p.Pet " +
-                    "FROM pet p,inventory i " +
-                    "WHERE (i.TQuantity != 0) AND (i.pID = p.pID)");
-            while(rs.next()){
-                nameField.addItem(rs.getString(1));
-                nameField.setFont(new Font("",Font.PLAIN,20));
-                nameField.setOpaque(true);
-            }
-        }catch(Exception ce){
-            ce.printStackTrace();
-        }
         buyContent.add(nameField);
 
         JLabel quantity = new JLabel("QUANTITY");
@@ -158,7 +145,7 @@ public class BuyContent extends JFrame {
         buyContent.add(quantity);
 
         JTextField quantityField = new JTextField();
-        quantityField.setBounds(170,450,275,25);
+        quantityField.setBounds(225,450,275,25);
         quantityField.setFont(new Font("",Font.PLAIN,20));
         quantityField.setForeground(Color.WHITE);
         quantityField.setCaretColor(Color.WHITE);
@@ -167,7 +154,7 @@ public class BuyContent extends JFrame {
         buyContent.add(quantityField);
 
         JSeparator s5 = new JSeparator();
-        s5.setBounds(165,475,275,5);
+        s5.setBounds(220,475,275,5);
         buyContent.add(s5);
 
         JLabel unitPrice = new JLabel("UNIT PRICE");
@@ -177,7 +164,7 @@ public class BuyContent extends JFrame {
         buyContent.add(unitPrice);
 
         JTextField unitPField = new JTextField(null,SwingConstants.RIGHT);
-        unitPField.setBounds(170,500,275,25);
+        unitPField.setBounds(225,500,275,25);
         unitPField.setFont(new Font("",Font.PLAIN,20));
         unitPField.setForeground(Color.WHITE);
         unitPField.setCaretColor(Color.WHITE);
@@ -200,7 +187,7 @@ public class BuyContent extends JFrame {
         java.util.Date date = new Date();
 
         JTextField dateField = new JTextField(dateFormat.format(date));
-        dateField.setBounds(170,550,275,25);
+        dateField.setBounds(225,550,275,25);
         dateField.setFont(new Font("",Font.PLAIN,20));
         dateField.setForeground(Color.WHITE);
         dateField.setCaretColor(Color.WHITE);
@@ -253,6 +240,61 @@ public class BuyContent extends JFrame {
         submit.setFont(new Font("",Font.PLAIN,20));
         buyContent.add(submit);
 
+        petField.addActionListener(e -> {
+            nameField.removeAllItems();
+            unitPField.setText("");
+            bg.clearSelection();
+        });
+
+
+        breed.addActionListener(e -> {
+            try{
+                ResultSet rs = con.s.executeQuery("SELECT name FROM pet WHERE pet = '"+petField.getSelectedItem()+"' and type = 'breed'");
+                nameField.removeAllItems();
+                unitPField.setText("");
+
+                while(rs.next()){
+                    String a = "";
+                    nameField.addItem(a = rs.getString(1));
+                    nameField.setFont(new Font("",Font.PLAIN,20));
+                    nameField.setOpaque(true);
+                    System.out.println(a);
+                }
+                rs = con.s.executeQuery("SELECT unitPrice FROM pet WHERE pet = '"+petField.getSelectedItem()+"' and type = 'breed'");
+                if (rs.next())
+                    unitPField.setText(rs.getString(1)+"/-");
+                revalidate();
+                repaint();
+
+            }catch (Exception ce){
+                ce.printStackTrace();
+            }
+        });
+
+        accessories.addActionListener(e -> {
+            try{
+                ResultSet rs = con.s.executeQuery("SELECT name FROM pet WHERE pet = '"+petField.getSelectedItem()+"' and type = 'accessory'");
+                nameField.removeAllItems();
+                unitPField.setText("");
+
+                while(rs.next()){
+                    String a = "";
+                    nameField.addItem(a = rs.getString(1));
+                    nameField.setFont(new Font("",Font.PLAIN,20));
+                    nameField.setOpaque(true);
+                    System.out.println(a);
+                }
+                rs = con.s.executeQuery("SELECT unitPrice FROM pet WHERE pet = '"+petField.getSelectedItem()+"' and type = 'accessory'");
+                if (rs.next())
+                    unitPField.setText(rs.getString(1)+"/-");
+                revalidate();
+                repaint();
+
+            }catch (Exception ce){
+                ce.printStackTrace();
+            }
+        });
+
         viewTable();
         revalidate();
         repaint();
@@ -262,7 +304,7 @@ public class BuyContent extends JFrame {
     private void viewTable() {
         JTable table = new JTable();
         try{
-            ResultSet rs = con.s.executeQuery("SELECT pet,name,breedOrAccessory,TQuantity,unitPrice" +
+            ResultSet rs = con.s.executeQuery("SELECT pet,type,name,TQuantity,unitPrice" +
                     " FROM INVENTORY i , PET p " +
                     "WHERE p.pID = i.pID");
             table.setModel(DbUtils.resultSetToTableModel(rs));

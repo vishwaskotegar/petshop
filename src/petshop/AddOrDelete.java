@@ -175,8 +175,7 @@ public class AddOrDelete extends JFrame {
                         type = "accessory";
 
                     try{
-                        con.s.executeUpdate("INSERT INTO pet VALUES(DEFAULT,'"+petfield.getText()+"','"+namefield.getText()+"'," +
-                                "'"+type+"','"+pricefield.getText()+"')");
+                        con.s.executeUpdate("INSERT INTO pet VALUES(DEFAULT,'"+petfield.getText()+"','"+type+"','"+namefield.getText()+"','"+pricefield.getText()+"')");
                         viewTable("SELECT * from pet");
                     }catch (Exception ce){
                         ce.printStackTrace();
@@ -260,7 +259,7 @@ public class AddOrDelete extends JFrame {
                 remove.setForeground(Color.BLACK.darker());
             }
         });
-        remove.setBounds(250,600,90,25);
+        remove.setBounds(230,600,90,25);
         remove.setFont(new Font("",Font.PLAIN,20));
         manageContent.add(remove);
 

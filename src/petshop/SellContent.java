@@ -1,5 +1,6 @@
 package petshop;
 
+import com.mysql.cj.jdbc.result.ResultSetImpl;
 import net.proteanit.sql.DbUtils;
 import javax.swing.*;
 import java.awt.*;
@@ -38,7 +39,7 @@ public class SellContent extends JFrame {
         sellContent.add(emp);
 
         JLabel cusPhone = new JLabel("CUSTOMER PHNO.");
-        cusPhone.setBounds(25,200,200,25);
+        cusPhone.setBounds(25,450,200,25);
         cusPhone.setFont(new Font("Open Sans",Font.PLAIN,20));
         cusPhone.setForeground(Color.WHITE);
         sellContent.add(cusPhone);
@@ -55,21 +56,41 @@ public class SellContent extends JFrame {
         type.setForeground(Color.WHITE);
         sellContent.add(type);
 
+        JRadioButton breed = new JRadioButton("BREED");
+        breed.setBounds(220,300,100,25);
+        breed.setFont(new Font("Open Sans",Font.PLAIN,20));
+        breed.setOpaque(false);
+//        breed.setFocusable(false);
+        breed.setForeground(Color.WHITE);
+        sellContent.add(breed);
+
+        JRadioButton accessories = new JRadioButton("ACCESSORY");
+        accessories.setBounds(340,300,150,25);
+        accessories.setFont(new Font("Open Sans",Font.PLAIN,20));
+        accessories.setOpaque(false);
+//        breed.setFocusable(false);
+        accessories.setForeground(Color.WHITE);
+        sellContent.add(accessories);
+
+        ButtonGroup bg = new ButtonGroup();
+        bg.add(breed);bg.add(accessories);
+
+
         JLabel  customer = new JLabel("CUSTOMER NAME");
-        customer.setBounds(25,350,200,25);
+        customer.setBounds(25,400,200,25);
         customer.setFont(new Font("Open Sans",Font.PLAIN,20));
         customer.setForeground(Color.WHITE);
         sellContent.add(customer);
 
 
         JLabel jdate = new JLabel("DATE");
-        jdate.setBounds(25,400,150,25);
+        jdate.setBounds(25,500,150,25);
         jdate.setFont(new Font("Open Sans",Font.PLAIN,20));
         jdate.setForeground(Color.WHITE);
         sellContent.add(jdate);
 
         JLabel price = new JLabel("PRICE");
-        price.setBounds(25,450,150,25);
+        price.setBounds(25,550,150,25);
         price.setFont(new Font("Open Sans",Font.PLAIN,20));
         price.setForeground(Color.WHITE);
         sellContent.add(price);
@@ -95,7 +116,7 @@ public class SellContent extends JFrame {
 
 
         JTextField customerPhno = new JTextField();
-        customerPhno.setBounds(220,200,275,25);
+        customerPhno.setBounds(220,450,275,25);
         customerPhno.setFont(new Font("",Font.PLAIN,20));
         customerPhno.setForeground(Color.WHITE);
         customerPhno.setCaretColor(Color.WHITE);
@@ -103,17 +124,23 @@ public class SellContent extends JFrame {
         customerPhno.setOpaque(false);
         sellContent.add(customerPhno);
 
-        JComboBox typeField = new JComboBox();
-        typeField.setBounds(220,300,275,25);
-        typeField.setFont(new Font("",Font.PLAIN,20));
+        JLabel name = new JLabel("NAME");
+        name.setBounds(25,350,150,25);
+        name.setFont(new Font("Open Sans",Font.PLAIN,20));
+        name.setForeground(Color.WHITE);
+        sellContent.add(name);
+
+        JComboBox nameField = new JComboBox();
+        nameField.setBounds(220,350,275,25);
+        nameField.setFont(new Font("",Font.PLAIN,20));
         //typeField.setCaretColor(Color.WHITE);
-        typeField.setForeground(Color.WHITE);
-        typeField.setBorder(null);
-        typeField.setOpaque(false);
-        sellContent.add(typeField);
+        //nameField.setForeground(Color.WHITE);
+        nameField.setBorder(null);
+        nameField.setOpaque(false);
+        sellContent.add(nameField);
 
         JTextField customerField = new JTextField();
-        customerField.setBounds(220,350,275,25);
+        customerField.setBounds(220,400,275,25);
         customerField.setFont(new Font("",Font.PLAIN,20));
         customerField.setCaretColor(Color.WHITE);
         customerField.setForeground(Color.WHITE);
@@ -125,11 +152,11 @@ public class SellContent extends JFrame {
         java.util.Date date = new Date();
         dateFormat.format(date);*/
 
-        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy");
+        DateFormat dateFormat = new SimpleDateFormat("dd/MM/yyyy hh:mm aa");
         java.util.Date date = new Date();
 
         JTextField dateField = new JTextField(dateFormat.format(date));
-        dateField.setBounds(220,400,275,25);
+        dateField.setBounds(220,500,275,25);
         dateField.setFont(new Font("",Font.PLAIN,20));
         dateField.setForeground(Color.WHITE);
         dateField.setCaretColor(Color.WHITE);
@@ -137,23 +164,23 @@ public class SellContent extends JFrame {
         dateField.setOpaque(false);
         sellContent.add(dateField);
 
-        JTextField priceField = new JTextField();
+        JTextField unitPField = new JTextField();
         /*try{
             ResultSet rs = con.s.executeQuery("select * from inventory where id = '6'");
             priceField.setText(rs.getString(6));
         }catch (Exception se){
             System.out.println(se);
         }*/
-        priceField.setBounds(220,450,275,25);
-        priceField.setFont(new Font("",Font.PLAIN,20));
-        priceField.setForeground(Color.WHITE);
-        priceField.setCaretColor(Color.WHITE);
-        priceField.setBorder(null);
-        priceField.setOpaque(false);
-        sellContent.add(priceField);
+        unitPField.setBounds(220,550,275,25);
+        unitPField.setFont(new Font("",Font.PLAIN,20));
+        unitPField.setForeground(Color.WHITE);
+        unitPField.setCaretColor(Color.WHITE);
+        unitPField.setBorder(null);
+        unitPField.setOpaque(false);
+        sellContent.add(unitPField);
 
         JSeparator s1 = new JSeparator();
-        s1.setBounds(215,225,275,5);
+        s1.setBounds(215,475,275,5);
         sellContent.add(s1);
 
         /*JSeparator s2 = new JSeparator();
@@ -161,16 +188,77 @@ public class SellContent extends JFrame {
         sellContent.add(s2);*/
 
         JSeparator s3 = new JSeparator();
-        s3.setBounds(215,375,275,5);
+        s3.setBounds(215,425,275,5);
         sellContent.add(s3);
 
         JSeparator s4 = new JSeparator();
-        s4.setBounds(215,425,275,5);
+        s4.setBounds(215,525,275,5);
         sellContent.add(s4);
 
         JSeparator s5 = new JSeparator();
-        s5.setBounds(215,475,275,5);
+        s5.setBounds(215,575,275,5);
         sellContent.add(s5);
+
+//        petField.addActionListener(e -> {
+//            try{
+//
+//                ResultSet rs = con.s.executeQuery("SELECT");
+//
+//            }catch (Exception ce){
+//                ce.printStackTrace();
+//            }
+//        });
+        petField.addActionListener(e -> {
+            nameField.removeAllItems();
+            unitPField.setText("");
+            bg.clearSelection();
+        });
+
+
+        breed.addActionListener(e -> {
+            try{
+                ResultSet rs = con.s.executeQuery("SELECT name FROM pet WHERE pet = '"+petField.getSelectedItem()+"' and type = 'breed'");
+                nameField.removeAllItems();
+                unitPField.setText("");
+
+                while(rs.next()){
+                    nameField.addItem(rs.getString(1));
+                    nameField.setFont(new Font("",Font.PLAIN,20));
+                    nameField.setOpaque(true);
+                }
+                rs = con.s.executeQuery("SELECT unitPrice FROM pet WHERE pet = '"+petField.getSelectedItem()+"' and type = 'breed'");
+                if (rs.next())
+                    unitPField.setText(rs.getString(1)+"/-");
+                revalidate();
+                repaint();
+
+            }catch (Exception ce){
+                ce.printStackTrace();
+            }
+        });
+
+        accessories.addActionListener(e -> {
+            try{
+                ResultSet rs = con.s.executeQuery("SELECT name FROM pet WHERE pet = '"+petField.getSelectedItem()+"' and type = 'accessory'");
+                nameField.removeAllItems();
+                unitPField.setText("");
+
+                while(rs.next()){
+                    nameField.addItem(rs.getString(1));
+                    nameField.setFont(new Font("",Font.PLAIN,20));
+                    nameField.setOpaque(true);
+//                    System.out.println(a);
+                }
+                rs = con.s.executeQuery("SELECT unitPrice FROM pet WHERE pet = '"+petField.getSelectedItem()+"' and type = 'accessory'");
+                if (rs.next())
+                    unitPField.setText(rs.getString(1)+"/-");
+                revalidate();
+                repaint();
+
+            }catch (Exception ce){
+                ce.printStackTrace();
+            }
+        });
 
 
         JLabel sell = new JLabel("SELL");
@@ -215,7 +303,7 @@ public class SellContent extends JFrame {
                 sell.setForeground(Color.BLACK.darker());
             }
         });
-        sell.setBounds(220,500,55,25);
+        sell.setBounds(220,600,55,25);
         sell.setFont(new Font("",Font.PLAIN,20));
         sellContent.add(sell);
 
