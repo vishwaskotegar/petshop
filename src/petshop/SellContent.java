@@ -14,7 +14,7 @@ public class SellContent extends JFrame {
     JPanel sellContent = new JPanel();
 
 
-    public JPanel sellContent(String empName){
+    public JPanel sellContent(String lID){
 
         sellContent.setBackground(Color.DARK_GRAY);
 
@@ -32,11 +32,23 @@ public class SellContent extends JFrame {
         sellContent.setBounds(300,0,1700,1047);
         sellContent.setLayout(null);
 
+        String empName = "";
+        try{
+            Connector con = new Connector();
+            ResultSet rs = con.s.executeQuery("SELECT Fname, lname from emp where lID = "+lID);
+            if (rs.next()) {
+                empName = (rs.getString(1) +" "+ rs.getString(2));
+            }
+        }catch(Exception ce){
+            ce.printStackTrace();
+        }
+
         JLabel emp = new JLabel("EMPLOYEE NAME - "+empName,SwingConstants.RIGHT);
         emp.setBounds(1150,80,400,25);
         emp.setFont(new Font("Open Sans",Font.PLAIN,20));
         emp.setForeground(Color.WHITE);
         sellContent.add(emp);
+
 
         JLabel cusPhone = new JLabel("CUSTOMER PHNO.");
         cusPhone.setBounds(25,450,200,25);

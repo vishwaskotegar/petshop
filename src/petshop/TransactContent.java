@@ -2,12 +2,13 @@ package petshop;
 
 import javax.swing.*;
 import java.awt.*;
+import java.sql.ResultSet;
 
 public class TransactContent  {
     Connector con = new Connector();
     JPanel transactContent = new JPanel();
 
-    public JPanel transactContent(String empName){
+    public JPanel transactContent(String lID){
         transactContent.setBounds(300,0,1700,1047);
         transactContent.setLayout(null);
         transactContent.setBackground(Color.DARK_GRAY);
@@ -17,6 +18,17 @@ public class TransactContent  {
         transactions.setFont(new Font("Open Sans",Font.PLAIN,50));
         transactions.setForeground(Color.WHITE);
         transactContent.add(transactions);
+
+        String empName = "";
+        try{
+            Connector con = new Connector();
+            ResultSet rs = con.s.executeQuery("SELECT Fname, lname from emp where lID = "+lID);
+            if (rs.next()) {
+                empName = (rs.getString(1) +" "+ rs.getString(2));
+            }
+        }catch(Exception ce){
+            ce.printStackTrace();
+        }
 
         JLabel emp = new JLabel("EMPLOYEE NAME - "+empName,SwingConstants.RIGHT);
         emp.setBounds(1150,80,400,25);

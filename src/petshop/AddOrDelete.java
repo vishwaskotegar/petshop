@@ -12,7 +12,7 @@ public class AddOrDelete extends JFrame {
     Connector con = new Connector();
     JPanel manageContent = new JPanel();
 
-    public JPanel addOrDelete(String empName){
+    public JPanel addOrDelete(String lID){
         manageContent.setBounds(300,0,1700,1047);
         manageContent.setLayout(null);
         manageContent.setBackground(Color.DARK_GRAY);
@@ -69,6 +69,23 @@ public class AddOrDelete extends JFrame {
         addRemove.setFont(new Font("Open Sans",Font.PLAIN,50));
         addRemove.setForeground(Color.white);
         manageContent.add(addRemove);
+
+        String empName = "";
+        try{
+            Connector con = new Connector();
+            ResultSet rs = con.s.executeQuery("SELECT Fname, lname from emp where lID = "+lID);
+            if (rs.next()) {
+                empName = (rs.getString(1) +" "+ rs.getString(2));
+            }
+        }catch(Exception ce){
+            ce.printStackTrace();
+        }
+
+        JLabel emp = new JLabel("EMPLOYEE NAME - "+empName,SwingConstants.RIGHT);
+        emp.setBounds(1150,80,400,25);
+        emp.setFont(new Font("Open Sans",Font.PLAIN,20));
+        emp.setForeground(Color.WHITE);
+        manageContent.add(emp);
 
         JLabel addHere = new JLabel("ADD NEW PET");
         addHere.setBounds(50, 150,200,25);

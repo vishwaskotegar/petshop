@@ -9,7 +9,7 @@ public class EditContent extends JFrame {
     JPanel editContent = new JPanel();
 
 
-    public JPanel editContent(String empName){
+    public JPanel editContent(String lID){
 
         editContent.setBackground(Color.DARK_GRAY);
 
@@ -201,8 +201,7 @@ public class EditContent extends JFrame {
                 int choice = JOptionPane.showConfirmDialog(editContent,"Are you sure you want to delete your account?","CONFIRM DELETE",JOptionPane.YES_NO_OPTION);
                 if (choice == 0){
                     try{
-                        con.s.executeUpdate("DELETE FROM login where lID = " +
-                                "(SELECT lID FROM emp WHERE fName = '"+empName+"')");
+                        con.s.executeUpdate("DELETE FROM login where lID = '"+lID+"'");
                         JOptionPane.showMessageDialog(editContent,"User Removed");
                         new Login("");
                         JFrame frame = (JFrame) SwingUtilities.getWindowAncestor(editContent);

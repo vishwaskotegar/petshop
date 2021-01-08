@@ -2,6 +2,9 @@ package petshop;
 
 import net.proteanit.sql.DbUtils;
 import javax.swing.*;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.event.MouseInputAdapter;
 import java.awt.*;
 import java.awt.event.*;
 import java.sql.ResultSet;
@@ -11,9 +14,10 @@ import java.util.Date;
 public class BuyContent extends JFrame {
     Connector con = new Connector();
     JPanel buyContent = new JPanel();
+    String value;
 
 
-    public JPanel buyContent(String empName){
+    public JPanel buyContent(String lID){
 
         buyContent.setBackground(Color.DARK_GRAY);
 
@@ -29,35 +33,46 @@ public class BuyContent extends JFrame {
         buyContent.setBounds(300,0,1700,1047);
         buyContent.setLayout(null);
 
+        String empName = "";
+        try{
+            Connector con = new Connector();
+            ResultSet rs = con.s.executeQuery("SELECT Fname, lname from emp where lID = "+lID);
+            if (rs.next()) {
+                empName = (rs.getString(1) +" "+ rs.getString(2));
+            }
+        }catch(Exception ce){
+            ce.printStackTrace();
+        }
+
         JLabel emp = new JLabel("EMPLOYEE NAME - "+empName,SwingConstants.RIGHT);
         emp.setBounds(1150,80,400,25);
         emp.setFont(new Font("Open Sans",Font.PLAIN,20));
         emp.setForeground(Color.WHITE);
         buyContent.add(emp);
 
-        JLabel addOrDelete = new JLabel("ADD TO INVENTORY");
-        addOrDelete.setForeground(Color.BLACK.darker());
-        addOrDelete.setFocusable(true);
-        //newUser.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
-        addOrDelete.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mouseClicked(MouseEvent e) {
-                new AddOrDelete();
-            }
-
-            @Override
-            public void mouseEntered(MouseEvent e){
-                addOrDelete.setForeground(new Color(0x1C97A3));
-            }
-
-            @Override
-            public void mouseExited(MouseEvent e){
-                addOrDelete.setForeground(Color.BLACK.darker());
-            }
-        });
-        addOrDelete.setBounds(220,600,200,25);
-        addOrDelete.setFont(new Font("",Font.PLAIN,20));
-        buyContent.add(addOrDelete);
+//        JLabel addOrDelete = new JLabel("ADD TO INVENTORY");
+//        addOrDelete.setForeground(Color.BLACK.darker());
+//        addOrDelete.setFocusable(true);
+//        //newUser.setCursor(Cursor.getPredefinedCursor(Cursor.HAND_CURSOR));
+//        addOrDelete.addMouseListener(new MouseAdapter() {
+//            @Override
+//            public void mouseClicked(MouseEvent e) {
+//                new AddOrDelete();
+//            }
+//
+//            @Override
+//            public void mouseEntered(MouseEvent e){
+//                addOrDelete.setForeground(new Color(0x1C97A3));
+//            }
+//
+//            @Override
+//            public void mouseExited(MouseEvent e){
+//                addOrDelete.setForeground(Color.BLACK.darker());
+//            }
+//        });
+//        addOrDelete.setBounds(220,600,200,25);
+//        addOrDelete.setFont(new Font("",Font.PLAIN,20));
+//        buyContent.add(addOrDelete);
 
         JLabel pet = new JLabel("PET");
         pet.setBounds(25,300,150,25);
@@ -77,6 +92,7 @@ public class BuyContent extends JFrame {
         breed.setOpaque(false);
 //        breed.setFocusable(false);
         breed.setForeground(Color.WHITE);
+        breed.setActionCommand("breed");
         buyContent.add(breed);
 
         JRadioButton accessories = new JRadioButton("ACCESSORY");
@@ -85,6 +101,7 @@ public class BuyContent extends JFrame {
         accessories.setOpaque(false);
 //        breed.setFocusable(false);
         accessories.setForeground(Color.WHITE);
+        accessories.setActionCommand("accessory");
         buyContent.add(accessories);
 
         ButtonGroup bg = new ButtonGroup();
@@ -106,8 +123,7 @@ public class BuyContent extends JFrame {
         try{
             Connector con = new Connector();
             ResultSet rs = con.s.executeQuery("SELECT DISTINCT Pet " +
-                    "FROM pet p,inventory i " +
-                    "WHERE i.TQuantity IS NOT NULL AND i.pID = p.pID");
+                    "FROM pet ");
             while(rs.next()){
                 petField.addItem(rs.getString(1));
                 petField.setFont(new Font("",Font.PLAIN,20));
@@ -172,13 +188,28 @@ public class BuyContent extends JFrame {
         unitPField.setOpaque(false);
         buyContent.add(unitPField);
 
+        JLabel totalPrice = new JLabel("TOTAL PRICE");
+        totalPrice.setBounds(25,550,150,25);
+        totalPrice.setFont(new Font("Open Sans",Font.PLAIN,20));
+        totalPrice.setForeground(Color.WHITE);
+        buyContent.add(totalPrice);
+
+        JTextField totalPField = new JTextField(null,SwingConstants.RIGHT);
+        totalPField.setBounds(225,550,275,25);
+        totalPField.setFont(new Font("",Font.PLAIN,20));
+        totalPField.setForeground(Color.WHITE);
+        totalPField.setCaretColor(Color.WHITE);
+        totalPField.setBorder(null);
+        totalPField.setOpaque(false);
+        buyContent.add(totalPField);
+
 //
         /*DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         java.util.Date date = new Date();
         dateFormat.format(date);*/
 
         JLabel jdate = new JLabel("DATE");
-        jdate.setBounds(25,550,150,25);
+        jdate.setBounds(25,600,150,25);
         jdate.setFont(new Font("Open Sans",Font.PLAIN,20));
         jdate.setForeground(Color.WHITE);
         buyContent.add(jdate);
@@ -187,7 +218,7 @@ public class BuyContent extends JFrame {
         java.util.Date date = new Date();
 
         JTextField dateField = new JTextField(dateFormat.format(date));
-        dateField.setBounds(225,550,275,25);
+        dateField.setBounds(225,600,275,25);
         dateField.setFont(new Font("",Font.PLAIN,20));
         dateField.setForeground(Color.WHITE);
         dateField.setCaretColor(Color.WHITE);
@@ -205,13 +236,18 @@ public class BuyContent extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 try{
                     //Connector con = new Connector();
+                    ResultSet rs = con.s.executeQuery("SELECT pID FROM pet WHERE name = '"+nameField.getSelectedItem()+"'");
+                    String pID = "";
+                    if (rs.next())
+                        pID = rs.getString(1);
                     con.s.executeUpdate("INSERT INTO transaction " +
-                            "VALUES()");
+                            "VALUES('"+dateField.getText()+"','"+pID+"','"+quantityField.getText()+"','"+
+                            totalPField.getText()+"','"+lID+"','"+nameField.getSelectedItem()+"','')");
                     //JOptionPane.showMessageDialog(null,"added to inventory");
                     supplierField.setText("");
                     supplierField.requestFocus();
                     quantityField.setText("");
-                    unitPField.setText("");
+                    totalPField.setText("");
                     //totalPricefield.setText("");
                     dateField.setText("");
 
@@ -219,8 +255,6 @@ public class BuyContent extends JFrame {
                     se.printStackTrace();
                     JOptionPane.showMessageDialog(null,se);
                 }
-
-
                 revalidate();
                 repaint();
                 viewTable();
@@ -236,33 +270,37 @@ public class BuyContent extends JFrame {
                 submit.setForeground(Color.BLACK.darker());
             }
         });
-        submit.setBounds(220,600,200,25);
+        submit.setBounds(220,650,200,25);
         submit.setFont(new Font("",Font.PLAIN,20));
         buyContent.add(submit);
 
         petField.addActionListener(e -> {
             nameField.removeAllItems();
-            unitPField.setText("");
+            totalPField.setText("");
             bg.clearSelection();
         });
 
 
         breed.addActionListener(e -> {
             try{
+                accessories.setVisible(false);
+                buyContent.remove(accessories);
                 ResultSet rs = con.s.executeQuery("SELECT name FROM pet WHERE pet = '"+petField.getSelectedItem()+"' and type = 'breed'");
                 nameField.removeAllItems();
-                unitPField.setText("");
+                totalPField.setText("");
 
                 while(rs.next()){
-                    String a = "";
-                    nameField.addItem(a = rs.getString(1));
+//                    String a = "";
+                    nameField.addItem(rs.getString(1));
                     nameField.setFont(new Font("",Font.PLAIN,20));
                     nameField.setOpaque(true);
-                    System.out.println(a);
+//                    System.out.println(a);
                 }
                 rs = con.s.executeQuery("SELECT unitPrice FROM pet WHERE pet = '"+petField.getSelectedItem()+"' and type = 'breed'");
-                if (rs.next())
-                    unitPField.setText(rs.getString(1)+"/-");
+                if (rs.next()) {
+                    value = rs.getString(1);
+                    unitPField.setText(rs.getString(1) + "/-");
+                }
                 revalidate();
                 repaint();
 
@@ -273,20 +311,24 @@ public class BuyContent extends JFrame {
 
         accessories.addActionListener(e -> {
             try{
+                breed.setVisible(false);
+                buyContent.remove(breed);
                 ResultSet rs = con.s.executeQuery("SELECT name FROM pet WHERE pet = '"+petField.getSelectedItem()+"' and type = 'accessory'");
                 nameField.removeAllItems();
-                unitPField.setText("");
+                totalPField.setText("");
 
                 while(rs.next()){
-                    String a = "";
-                    nameField.addItem(a = rs.getString(1));
+//                    String a = "";
+                    nameField.addItem(rs.getString(1));
                     nameField.setFont(new Font("",Font.PLAIN,20));
                     nameField.setOpaque(true);
-                    System.out.println(a);
+//                    System.out.println(a);
                 }
                 rs = con.s.executeQuery("SELECT unitPrice FROM pet WHERE pet = '"+petField.getSelectedItem()+"' and type = 'accessory'");
-                if (rs.next())
-                    unitPField.setText(rs.getString(1)+"/-");
+                if (rs.next()) {
+                    value = rs.getString(1);
+                    unitPField.setText(rs.getString(1) + "/-");
+                }
                 revalidate();
                 repaint();
 
@@ -295,10 +337,75 @@ public class BuyContent extends JFrame {
             }
         });
 
+
+
+        nameField.addMouseListener(new MouseInputAdapter() {
+            @Override
+            public void mouseClicked(MouseEvent e) {
+                nameField.addActionListener(e1 -> {
+                    try{
+                        unitPField.setText("");
+                        ResultSet rs = con.s.executeQuery("SELECT unitPrice FROM pet WHERE pet = '"+petField.getSelectedItem()+"' and type = '"
+                                +bg.getSelection().getActionCommand()+"' and name = '"+nameField.getSelectedItem()+"'");
+                        if (rs.next()){
+                            unitPField.setText(rs.getString(1)+"/-");
+                           // System.out.println(rs.getString(1));
+                        }
+                        rs.close();
+
+                        revalidate();
+                        repaint();
+                    }catch (Exception ce){
+                        ce.printStackTrace();
+                    }
+                });
+            }
+        });
+
+        quantityField.getDocument().addDocumentListener(new DocumentListener() {
+            @Override
+            public void insertUpdate(DocumentEvent e) {
+                int a = 0;
+                if (isNumeric(value) && isNumeric(quantityField.getText()))
+                    a = Integer.parseInt(value) * Integer.parseInt(quantityField.getText());
+                    totalPField.setText(""+a+"/-");
+                revalidate();
+                repaint();
+            }
+
+            @Override
+            public void removeUpdate(DocumentEvent e) {
+                int a = 0;
+                if (isNumeric(value) && isNumeric(quantityField.getText()))
+                    a = Integer.parseInt(value) * Integer.parseInt(quantityField.getText());
+                totalPField.setText(""+a+"/-");
+                revalidate();
+                repaint();
+            }
+
+            @Override
+            public void changedUpdate(DocumentEvent e) {
+                int a = 0;
+                if (isNumeric(value) && isNumeric(quantityField.getText()))
+                    a = Integer.parseInt(value) * Integer.parseInt(quantityField.getText());
+                totalPField.setText(""+a+"/-");
+                revalidate();
+                repaint();
+            }
+        });
         viewTable();
         revalidate();
         repaint();
         return buyContent;
+    }
+
+    public static boolean isNumeric(String str) {
+        try {
+            Double.parseDouble(str);
+            return true;
+        } catch(NumberFormatException e){
+            return false;
+        }
     }
 
     private void viewTable() {

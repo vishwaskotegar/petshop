@@ -9,7 +9,7 @@ public class HomePage extends JFrame{
     JPanel panel;
 
 
-    public HomePage(String Lid){
+    public HomePage(String lID){
 
         setTitle("HOME PAGE");
         setSize(974, 1047);
@@ -64,67 +64,61 @@ public class HomePage extends JFrame{
         logOut.setBounds(30,440,225,50);
         navigator.add(logOut);
 
-        String empName = "";
-        try{
-            Connector con = new Connector();
-            ResultSet rs = con.s.executeQuery("SELECT Fname from emp where lID = "+Lid);
-            if (rs.next()) {
-                empName = (rs.getString(1));
-            }
-        }catch(Exception ce){
-            ce.printStackTrace();
-        }
+//        String empName = "";
+//        try{
+//            Connector con = new Connector();
+//            ResultSet rs = con.s.executeQuery("SELECT Fname from emp where lID = "+Lid);
+//            if (rs.next()) {
+//                empName = (rs.getString(1));
+//            }
+//        }catch(Exception ce){
+//            ce.printStackTrace();
+//        }
 
-        add(panel = new SellContent().sellContent(empName));
+        add(panel = new SellContent().sellContent(lID));
         revalidate();
         repaint();
 
-        String finalEmpName5 = empName;
         manage.addActionListener(e -> {
             remove(panel);
-            add(panel = new AddOrDelete().addOrDelete(finalEmpName5));
+            add(panel = new AddOrDelete().addOrDelete(lID));
             revalidate();
             repaint();
         });
 
 
-        String finalEmpName = empName;
         buying.addActionListener(e -> {
             remove(panel);
-            add(panel = new BuyContent().buyContent(finalEmpName));
+            add(panel = new BuyContent().buyContent(lID));
             revalidate();
             repaint();
         });
 
-        String finalEmpName1 = empName;
         selling.addActionListener(e -> {
             remove(panel);
-            add(panel = new SellContent().sellContent(finalEmpName1));
+            add(panel = new SellContent().sellContent(lID));
             revalidate();
             repaint();
 
         });
 
-        String finalEmpName2 = empName;
         editProfile.addActionListener(e -> {
             remove(panel);
-            add(panel = new EditContent().editContent(finalEmpName2));
+            add(panel = new EditContent().editContent(lID));
             revalidate();
             repaint();
         });
 
-        String finalEmpName3 = empName;
         transactions.addActionListener(e -> {
             remove(panel);
-            add(panel = new TransactContent().transactContent(finalEmpName3));
+            add(panel = new TransactContent().transactContent(lID));
             revalidate();
             repaint();
         });
 
-        String finalEmpName4 = empName;
         inventory.addActionListener(e -> {
             remove(panel);
-            add(panel = new InventoryContent().inventoryContent(finalEmpName4));
+            add(panel = new InventoryContent().inventoryContent(lID));
             revalidate();
             repaint();
         });
