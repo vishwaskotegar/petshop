@@ -301,6 +301,7 @@ public class BuyContent extends JFrame {
                     value = rs.getString(1);
                     unitPField.setText(rs.getString(1) + "/-");
                 }
+                totalPField.setText("0/-");
                 revalidate();
                 repaint();
 
@@ -329,6 +330,7 @@ public class BuyContent extends JFrame {
                     value = rs.getString(1);
                     unitPField.setText(rs.getString(1) + "/-");
                 }
+                totalPField.setText("0/-");
                 revalidate();
                 repaint();
 
@@ -344,15 +346,17 @@ public class BuyContent extends JFrame {
             public void mouseClicked(MouseEvent e) {
                 nameField.addActionListener(e1 -> {
                     try{
+                        quantityField.setText("");
                         unitPField.setText("");
                         ResultSet rs = con.s.executeQuery("SELECT unitPrice FROM pet WHERE pet = '"+petField.getSelectedItem()+"' and type = '"
                                 +bg.getSelection().getActionCommand()+"' and name = '"+nameField.getSelectedItem()+"'");
                         if (rs.next()){
+                            value = rs.getString(1);
                             unitPField.setText(rs.getString(1)+"/-");
+                            totalPField.setText("0/-");
                            // System.out.println(rs.getString(1));
                         }
                         rs.close();
-
                         revalidate();
                         repaint();
                     }catch (Exception ce){
