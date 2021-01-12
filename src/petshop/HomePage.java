@@ -135,6 +135,6 @@ public class HomePage extends JFrame{
 
 
     public static void main(String[] args) {
-        new HomePage("2");
+        new HomePage("3");
     }
 }

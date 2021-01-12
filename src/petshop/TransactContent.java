@@ -1,10 +1,14 @@
 package petshop;
 
+import net.proteanit.sql.DbUtils;
+
 import javax.swing.*;
+import javax.swing.table.TableCellRenderer;
+import javax.swing.table.TableColumn;
 import java.awt.*;
 import java.sql.ResultSet;
 
-public class TransactContent  {
+public class TransactContent extends JFrame {
     Connector con = new Connector();
     JPanel transactContent = new JPanel();
 
@@ -36,11 +40,40 @@ public class TransactContent  {
         emp.setForeground(Color.WHITE);
         transactContent.add(emp);
 
-        JTable table = new JTable();
-        table.setBounds(200,200,1200,700);
-        transactContent.add(table);
-
+//        JTable table = new JTable();
+//        table.setBounds(200,200,1200,700);
+//        transactContent.add(table);
+        viewTable();
 
         return transactContent;
+    }
+
+    private void viewTable() {
+        JTable table = new JTable(){
+            @Override
+            public Component prepareRenderer(TableCellRenderer renderer, int row, int column) {
+                Component component = super.prepareRenderer(renderer, row, column);
+                int rendererWidth = component.getPreferredSize().width;
+                TableColumn tableColumn = getColumnModel().getColumn(column);
+                tableColumn.setPreferredWidth(Math.max(rendererWidth + getIntercellSpacing().width, tableColumn.getPreferredWidth()));
+                return component;
+            }
+        };
+        try{
+            ResultSet rs = con.s.executeQuery("call transaction");
+            table.setModel(DbUtils.resultSetToTableModel(rs));
+            //SQL command  ---> ALTER TABLE tablename AUTO_INCREMENT = 1
+            JScrollPane pane = new JScrollPane(table);
+            table.setFont(new Font("",Font.PLAIN,20));
+            table.getTableHeader().setFont(new Font(null,Font.PLAIN,18));
+            table.setRowHeight(30);
+//            table.setAutoResizeMode(JTable.AUTO_RESIZE_OFF);
+            pane.setBounds(200,200,1200,700);
+            transactContent.add(pane);
+        }catch(Exception se){
+            se.printStackTrace();
+        }
+        revalidate();
+        repaint();
     }
 }

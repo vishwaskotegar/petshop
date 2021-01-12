@@ -104,13 +104,14 @@ class Login extends JFrame{
                 //String mysqlPassword = ;
                 //Statement stm = con.createStatement();
 
-                String sql = "select lID from login where username = '"+userField.getText()+"' and password = '"+passField.getText()+"'";
+                String sql = "CALL login('"+userField.getText()+"','"+passField.getText()+"')";
 
                 ResultSet rs = con.s.executeQuery(sql);
 
 
                 if (rs.next()){
                     String Lid = rs.getString(1);
+                    System.out.println(Lid);
                     new HomePage(Lid);
                     dispose();
                 }else{

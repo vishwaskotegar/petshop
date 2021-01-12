@@ -3,6 +3,7 @@ package petshop;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.sql.ResultSet;
 
 public class EditContent extends JFrame {
     Connector con = new Connector();
@@ -113,7 +114,7 @@ public class EditContent extends JFrame {
         userField.setOpaque(false);
         editContent.add(userField);
 
-        JTextField passwordField = new JTextField();
+        JPasswordField passwordField = new JPasswordField();
         passwordField.setBounds(170,500,275,25);
         passwordField.setFont(new Font("",Font.PLAIN,20));
         passwordField.setForeground(Color.WHITE);
@@ -145,6 +146,39 @@ public class EditContent extends JFrame {
         JSeparator s6 = new JSeparator();
         s6.setBounds(165,525,275,5);
         editContent.add(s6);
+
+        try{
+            Connector con = new Connector();
+            ResultSet rs = con.s.executeQuery("SELECT fName,lName,email,phno,l.username,l.password " +
+                    "FROM emp e, login l " +
+                    "WHERE l.lID = '"+lID+"' and e.lID = '"+lID+"'");
+            if (rs.next()){
+                firstNameField.setText(rs.getString(1));
+                lastNameField.setText(rs.getString(2));
+                emailField.setText(rs.getString(3));
+                phoneField.setText(rs.getString(4));
+                userField.setText(rs.getString(5));
+                passwordField.setText(rs.getString(6));
+            }
+        }catch(Exception ce){
+            ce.printStackTrace();
+        };
+
+        JCheckBox hide = new JCheckBox("hide",true);
+        hide.setForeground(Color.white);
+        hide.setBounds(440,500,100,25);
+        hide.setFont(new Font("",Font.PLAIN,20));
+        hide.setFocusable(false);
+        hide.setContentAreaFilled(false);
+        char default1 = passwordField.getEchoChar();
+        hide.addActionListener(e -> {
+            if(hide.isSelected())
+                passwordField.setEchoChar(default1);
+            else
+                passwordField.setEchoChar((char)0);
+        });
+        hide.setOpaque(false);
+        editContent.add(hide);
 
 
         JLabel update = new JLabel("UPDATE");

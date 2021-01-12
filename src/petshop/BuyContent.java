@@ -87,7 +87,7 @@ public class BuyContent extends JFrame {
         buyContent.add(type);
 
         JRadioButton breed = new JRadioButton("BREED");
-        breed.setBounds(220,350,150,25);
+        breed.setBounds(220,350,100,25);
         breed.setFont(new Font("Open Sans",Font.PLAIN,20));
         breed.setOpaque(false);
 //        breed.setFocusable(false);
@@ -240,16 +240,15 @@ public class BuyContent extends JFrame {
                     String pID = "";
                     if (rs.next())
                         pID = rs.getString(1);
-                    con.s.executeUpdate("INSERT INTO transaction " +
-                            "VALUES('"+dateField.getText()+"','"+pID+"','"+quantityField.getText()+"','"+
-                            totalPField.getText()+"','"+lID+"','"+nameField.getSelectedItem()+"','')");
+                    con.s.executeUpdate("call buy('"+dateField.getText()+"','"+nameField.getSelectedItem()+"','"+quantityField.getText()+"','"+value+"','"+lID+"','"+supplierField.getText()+"')");
                     //JOptionPane.showMessageDialog(null,"added to inventory");
                     supplierField.setText("");
                     supplierField.requestFocus();
                     quantityField.setText("");
                     totalPField.setText("");
                     //totalPricefield.setText("");
-                    dateField.setText("");
+                    dateField.setText(dateFormat.format(date));
+                    JOptionPane.showMessageDialog(null,nameField.getSelectedItem()+" added successfully!");
 
                 }catch (Exception se){
                     se.printStackTrace();
@@ -278,11 +277,13 @@ public class BuyContent extends JFrame {
             nameField.removeAllItems();
             totalPField.setText("");
             bg.clearSelection();
+            petField.setEditable(false);
         });
 
 
         breed.addActionListener(e -> {
             try{
+                petField.disable();
                 accessories.setVisible(false);
                 buyContent.remove(accessories);
                 ResultSet rs = con.s.executeQuery("SELECT name FROM pet WHERE pet = '"+petField.getSelectedItem()+"' and type = 'breed'");
@@ -312,6 +313,7 @@ public class BuyContent extends JFrame {
 
         accessories.addActionListener(e -> {
             try{
+                petField.disable();
                 breed.setVisible(false);
                 buyContent.remove(breed);
                 ResultSet rs = con.s.executeQuery("SELECT name FROM pet WHERE pet = '"+petField.getSelectedItem()+"' and type = 'accessory'");
