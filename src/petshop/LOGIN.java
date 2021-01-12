@@ -6,7 +6,7 @@ import javax.swing.*;
 
 
 class Login extends JFrame{
-    Login(){
+    Login(String preloadedUsername){
 
         setTitle("PET SHOP");
         setSize(500,700);
@@ -34,7 +34,7 @@ class Login extends JFrame{
         username.setFont(new Font("Open Sans",Font.PLAIN,20));
         add(username);
 
-        JTextField userField = new JTextField();
+        JTextField userField = new JTextField(preloadedUsername);
         userField.setBounds(155,500,275,25);
         userField.setFont(new Font("",Font.PLAIN,20));
         //userField.setForeground(new Color(77, 19, 209,50));
@@ -98,25 +98,27 @@ class Login extends JFrame{
         });
         logButton.addActionListener(e -> {
             try{
-                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/petshop","root","1234");
+                //Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/petshop","root","1234");
+                Connector con = new Connector();
+                //String mysqlUsername = ;
+                //String mysqlPassword = ;
+                //Statement stm = con.createStatement();
 
-                String mysqlUsername = userField.getText();
-                String mysqlPassword = passField.getText();
+                String sql = "select lID from login where username = '"+userField.getText()+"' and password = '"+passField.getText()+"'";
 
-                Statement stm = con.createStatement();
+                ResultSet rs = con.s.executeQuery(sql);
 
-                String sql = "select * from employee where username = '"+mysqlUsername+"' and password = '"+mysqlPassword+"'";
 
-                ResultSet rs = stm.executeQuery(sql);
                 if (rs.next()){
-                    new HomePage();
+                    String Lid = rs.getString(1);
+                    new HomePage(Lid);
                     dispose();
                 }else{
                     JOptionPane.showMessageDialog(this,"wrong username or password!");
-                    userField.setText("");
+                    //userField.setText("");
                     passField.setText("");
 
-                    con.close();
+                    //con.close();
                 }
             }catch (Exception ce){
                 System.out.println(ce.getMessage());
@@ -189,11 +191,12 @@ class Login extends JFrame{
         //setIconImage();
 
         jcancel.addActionListener(e ->{
-                    int a = JOptionPane.showConfirmDialog(null,"Are you sure you want to exit the application?","Confirm exit",JOptionPane.YES_NO_OPTION);
+                    int a = JOptionPane.showConfirmDialog(this,"Are you sure you want to exit the application?","Confirm exit",JOptionPane.YES_NO_OPTION);
+                    System.out.println(a);
                     if(a == 0)
                         System.exit(0);
                 }
-                );
+        );
 
 
         setResizable(false);
@@ -202,6 +205,6 @@ class Login extends JFrame{
     }
 
     public static void main(String[] args) {
-        new Login();
+        new Login("");
     }
 }

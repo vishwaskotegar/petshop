@@ -131,6 +131,7 @@ class CreateUser extends JFrame {
         add(submit);
 
         submit.addActionListener(e -> {
+
             try{
                 Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/petshop","root","1234");
 
@@ -141,16 +142,28 @@ class CreateUser extends JFrame {
                 String mysqlUID = userField.getText();
                 String mysqlP = passField.getText();
 
+                if (isNumeric(mysqlPH)) {
 
-                Statement stm = con.createStatement();
+                    Statement stm = con.createStatement();
 
-                String sql = "INSERT INTO EMPLOYEE VALUES('"+mysqlUID+"','"+mysqlP+"','"+mysqlFN+"','"+mysqlLN+"','"+mysqlEm+"','"+mysqlPH+"')";
-                stm.executeUpdate(sql);
-                JOptionPane.showMessageDialog(this,"new user '"+mysqlUID+"' created");
-                new Login();
-                dispose();
+                    ResultSet rs = stm.executeQuery("select * from login where username = '" + userField.getText() + "';");
+                    if (rs.next()) {
+                        JOptionPane.showMessageDialog(this, "Username already exits!");
+                    } else {
+                        stm.executeUpdate("INSERT INTO login VALUES(DEFAULT,'" + userField.getText() + "','" + passField.getText() + "');");
+                        String sql = "INSERT INTO EMP VALUES(LAST_INSERT_ID(),'" + mysqlFN + "','" + mysqlLN + "','" + mysqlEm + "','" + mysqlPH + "')";
+                        stm.executeUpdate(sql);
+                        JOptionPane.showMessageDialog(this, "new user '" + mysqlUID + "' created");
+                        new Login(mysqlUID);
+                        dispose();
+                    }
+                }else{
+                    JOptionPane.showMessageDialog(this,"Enter valid phone number");
+                }
+
+
             }catch (Exception ce){
-                System.out.println(ce.getMessage());
+                ce.printStackTrace();
             }
         });
 
@@ -193,7 +206,7 @@ class CreateUser extends JFrame {
         back.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
-                new Login();
+                new Login("");
                 dispose();
             }
 
@@ -226,6 +239,15 @@ class CreateUser extends JFrame {
 
         setVisible(true);
 
+    }
+
+    public static boolean isNumeric(String str) {
+        try {
+            Double.parseDouble(str);
+            return true;
+        } catch(NumberFormatException e){
+            return false;
+        }
     }
 
     public static void main(String[] args) {
