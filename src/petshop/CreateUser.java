@@ -133,7 +133,7 @@ class CreateUser extends JFrame {
         submit.addActionListener(e -> {
 
             try{
-                Connection con = DriverManager.getConnection("jdbc:mysql://localhost:3306/petshop","root","1234");
+                Connector con = new Connector();
 
                 String mysqlFN = firstField.getText();
                 String mysqlLN = lastField.getText();
@@ -144,15 +144,13 @@ class CreateUser extends JFrame {
 
                 if (isNumeric(mysqlPH)) {
 
-                    Statement stm = con.createStatement();
-
-                    ResultSet rs = stm.executeQuery("select * from login where username = '" + userField.getText() + "';");
+                    ResultSet rs = con.s.executeQuery("select * from login where username = '" + userField.getText() + "';");
                     if (rs.next()) {
                         JOptionPane.showMessageDialog(this, "Username already exits!");
                     } else {
-                        stm.executeUpdate("INSERT INTO login VALUES(DEFAULT,'" + userField.getText() + "','" + passField.getText() + "');");
+                        con.s.executeUpdate("INSERT INTO login VALUES(DEFAULT,'" + userField.getText() + "','" + passField.getText() + "');");
                         String sql = "INSERT INTO EMP VALUES(LAST_INSERT_ID(),'" + mysqlFN + "','" + mysqlLN + "','" + mysqlEm + "','" + mysqlPH + "')";
-                        stm.executeUpdate(sql);
+                        con.s.executeUpdate(sql);
                         JOptionPane.showMessageDialog(this, "new user '" + mysqlUID + "' created");
                         new Login(mysqlUID);
                         dispose();

@@ -5,6 +5,8 @@ import java.awt.*;
 import java.awt.event.*;
 import java.sql.ResultSet;
 
+import static petshop.CreateUser.isNumeric;
+
 public class EditContent extends JFrame {
     Connector con = new Connector();
     JPanel editContent = new JPanel();
@@ -189,21 +191,30 @@ public class EditContent extends JFrame {
             @Override
             public void mouseClicked(MouseEvent e) {
                 try{
-                    //Connector con = new Connector();
-                    con.s.executeUpdate("INSERT INTO transaction " +
-                            "VALUES (DEFAULT,'"+phoneField.getText()+"','"+emailField.getText()+"'," +
-                            "'"+phoneField.getText()+"','"+userField.getText() +"','bought')");
-                    //JOptionPane.showMessageDialog(null,"added to inventory");
-                    //petField.setText("");
-                    firstNameField.requestFocus();
-                    lastNameField.setText("");
-                    emailField.setText("");
-                    //dateField.setText("");
-                    userField.setText("");
+                    Connector con = new Connector();
 
-                }catch (Exception se){
-                    System.out.println(se);
-                    JOptionPane.showMessageDialog(null,se);
+                    String mysqlFN = firstNameField.getText();
+                    String mysqlLN = lastNameField.getText();
+                    String mysqlEm = emailField.getText();
+                    String mysqlPH = phoneField.getText();
+                    String mysqlUID = userField.getText();
+                    String mysqlP = passwordField.getText();
+
+                    if (isNumeric(mysqlPH)) {
+                        con.s.executeUpdate("UPDATE emp " +
+                                "SET fName = '"+firstNameField.getText()+"', lName = '"+lastNameField.getText()+"',email = '"+emailField.getText()+"',phno = '"+phoneField.getText()+"' " +
+                                "WHERE lID = '"+lID+"';");
+                        String sql = "UPDATE login " +
+                                "SET username = '"+userField.getText()+"',password = '"+passwordField.getText()+"'";
+                        con.s.executeUpdate(sql);
+                        JOptionPane.showMessageDialog(null, "User '" + mysqlUID + "' updated!");
+                    }else{
+                        JOptionPane.showMessageDialog(null,"Enter valid phone number");
+                    }
+
+
+                }catch (Exception ce){
+                    ce.printStackTrace();
                 }
 
 
@@ -221,7 +232,7 @@ public class EditContent extends JFrame {
                 update.setForeground(Color.BLACK.darker());
             }
         });
-        update.setBounds(220,550,80,25);
+        update.setBounds(150,550,80,25);
         update.setFont(new Font("",Font.PLAIN,20));
         editContent.add(update);
 
@@ -260,7 +271,7 @@ public class EditContent extends JFrame {
                 delete.setForeground(Color.BLACK.darker());
             }
         });
-        delete.setBounds(350,550,180,25);
+        delete.setBounds(280,550,180,25);
         delete.setFont(new Font("",Font.PLAIN,20));
         editContent.add(delete);
 
