@@ -1,6 +1,6 @@
 # petshop
 
-created by Vishwas U.S and Seegan Paul.
-developed using Intellij IDE.
-with JAVA Swing and MySQL.
+Created by Vishwas U.S and Seegan Paul.
+Developed using Intellij IDE.
+With JAVA Swing and MySQL.
 
